@@ -191,56 +191,59 @@ public class MainActivity extends Activity {
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			if (s != null) {
-				TableRow tr = (TableRow) view.getParent();
-				TextView totalView = (TextView) tr.findViewById(TOTALID);
-				TextView nettoUmsatzView = (TextView) tr
-						.findViewById(NETTOUMSATZID);
-				TextView einkaufTotalView = (TextView) tr
-						.findViewById(EINKAUFTOTALID);
-				TextView nettoUmsatzssummeView = (TextView) findViewById(R.id.nettoUmsatzSumme);
-				TextView einkaufssummeView = (TextView) findViewById(R.id.einkaufssumme);
-
-				FleischModel fleisch = fleischList.get(index);
-
-				double totalBestellung = Integer.valueOf(s.toString())
-						* fleisch.einheitProBestellung;
-				totalView.setText(String.valueOf(totalBestellung));
-
-				double verkaufsmenge = totalBestellung
-						- (totalBestellung * fleisch.getSchwund());
-				double nettoUmsatz = verkaufsmenge
-						* fleisch.getVerkaufsfaktor() * fleisch.getNettoPreis();
-				nettoUmsatzView.setText(df.format(nettoUmsatz) + "€");
-
-				double einkaufTotal = totalBestellung * fleisch.einkaufspreis;
-				einkaufTotalView.setText(df.format(einkaufTotal) + "€");
-
-				double nettoUmsatzssumme = 0;
-				double einkaufssumme = 0;
-				TableLayout tl = (TableLayout) tr.getParent();
-				for (int j = 0; j < tl.getChildCount() - 1; j++) {
-					TableRow thisTr = (TableRow) tl.getChildAt(j + 1);
-					if (((TextView) thisTr.findViewById(NETTOUMSATZID))
-							.getText() != "") {
-						double thisNettoUmsatz = Double
-								.valueOf(((String) ((TextView) thisTr
-										.findViewById(NETTOUMSATZID)).getText())
-										.replace("€", "").replace(",", "."));
-						nettoUmsatzssumme += thisNettoUmsatz;
-					}
-					if (((TextView) thisTr.findViewById(EINKAUFTOTALID))
-							.getText() != "") {
-						double thisEinkaufTotal = Double
-								.valueOf(((String) ((TextView) thisTr
-										.findViewById(EINKAUFTOTALID))
-										.getText()).replace("€", "").replace(",", "."));
-						einkaufssumme += thisEinkaufTotal;
-					}
-				}
-				nettoUmsatzssummeView.setText(String.valueOf(nettoUmsatzssumme)	+ "€");
-				einkaufssummeView.setText(String.valueOf(einkaufssumme) + "€");
+			int bestellungen;
+			if (s.toString().equals("")) {
+				bestellungen = 0;
+			} else {
+				bestellungen = Integer.valueOf(s.toString());
 			}
+			TableRow tr = (TableRow) view.getParent();
+			TextView totalView = (TextView) tr.findViewById(TOTALID);
+			TextView nettoUmsatzView = (TextView) tr
+					.findViewById(NETTOUMSATZID);
+			TextView einkaufTotalView = (TextView) tr
+					.findViewById(EINKAUFTOTALID);
+			TextView nettoUmsatzssummeView = (TextView) findViewById(R.id.nettoUmsatzSumme);
+			TextView einkaufssummeView = (TextView) findViewById(R.id.einkaufssumme);
+
+			FleischModel fleisch = fleischList.get(index);
+
+			double totalBestellung = bestellungen * fleisch.einheitProBestellung;
+			totalView.setText(String.valueOf(totalBestellung));
+
+			double verkaufsmenge = totalBestellung
+					- (totalBestellung * fleisch.getSchwund());
+			double nettoUmsatz = verkaufsmenge * fleisch.getVerkaufsfaktor()
+					* fleisch.getNettoPreis();
+			nettoUmsatzView.setText(df.format(nettoUmsatz) + "€");
+
+			double einkaufTotal = totalBestellung * fleisch.einkaufspreis;
+			einkaufTotalView.setText(df.format(einkaufTotal) + "€");
+
+			double nettoUmsatzssumme = 0;
+			double einkaufssumme = 0;
+			TableLayout tl = (TableLayout) tr.getParent();
+			for (int j = 0; j < tl.getChildCount() - 1; j++) {
+				TableRow thisTr = (TableRow) tl.getChildAt(j + 1);
+				if (((TextView) thisTr.findViewById(NETTOUMSATZID)).getText() != "") {
+					double thisNettoUmsatz = Double
+							.valueOf(((String) ((TextView) thisTr
+									.findViewById(NETTOUMSATZID)).getText())
+									.replace("€", "").replace(",", "."));
+					nettoUmsatzssumme += thisNettoUmsatz;
+				}
+				if (((TextView) thisTr.findViewById(EINKAUFTOTALID)).getText() != "") {
+					double thisEinkaufTotal = Double
+							.valueOf(((String) ((TextView) thisTr
+									.findViewById(EINKAUFTOTALID)).getText())
+									.replace("€", "").replace(",", "."));
+					einkaufssumme += thisEinkaufTotal;
+				}
+			}
+			nettoUmsatzssummeView.setText(String.valueOf(nettoUmsatzssumme)
+					+ "€");
+			einkaufssummeView.setText(String.valueOf(einkaufssumme) + "€");
+
 		}
 
 		@Override
