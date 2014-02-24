@@ -166,24 +166,30 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int TableLayout1=0x7f0a0000;
-        public static final int action_settings=0x7f0a000e;
-        public static final int einkaufssumme=0x7f0a000a;
-        public static final int nettoUmsatzSumme=0x7f0a000c;
-        public static final int tableRow1=0x7f0a0001;
-        public static final int textView1=0x7f0a0002;
-        public static final int textView11=0x7f0a000d;
-        public static final int textView14=0x7f0a0006;
-        public static final int textView2=0x7f0a0008;
-        public static final int textView3=0x7f0a0003;
-        public static final int textView4=0x7f0a0004;
-        public static final int textView5=0x7f0a0005;
-        public static final int textView6=0x7f0a0007;
-        public static final int textView7=0x7f0a0009;
-        public static final int textView9=0x7f0a000b;
+        public static final int TableLayout1=0x7f0a0003;
+        public static final int action_settings=0x7f0a0012;
+        public static final int einkaufssumme=0x7f0a000b;
+        public static final int fleischBestllListView=0x7f0a0002;
+        public static final int fleischBtn=0x7f0a0010;
+        public static final int fleischSaveBtn=0x7f0a000f;
+        public static final int getraenkeBtn=0x7f0a0011;
+        public static final int nettoUmsatzSumme=0x7f0a000d;
+        public static final int tableRow1=0x7f0a0004;
+        public static final int textView1=0x7f0a0000;
+        public static final int textView11=0x7f0a000e;
+        public static final int textView14=0x7f0a0008;
+        public static final int textView2=0x7f0a0001;
+        public static final int textView3=0x7f0a0005;
+        public static final int textView4=0x7f0a0006;
+        public static final int textView5=0x7f0a0007;
+        public static final int textView6=0x7f0a0009;
+        public static final int textView7=0x7f0a000a;
+        public static final int textView9=0x7f0a000c;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
+        public static final int bestellungen_layout=0x7f030000;
+        public static final int fleisch_layout=0x7f030001;
+        public static final int main_layout=0x7f030002;
     }
     public static final class menu {
         public static final int main=0x7f090000;
@@ -223,5 +229,6 @@ public final class R {
     }
     public static final class xml {
         public static final int fleisch=0x7f040000;
+        public static final int fleisch_bestellungen=0x7f040001;
     }
 }

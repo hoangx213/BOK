@@ -73,5 +73,88 @@ public class FleischModel {
 	public double getWareneinsatz() {
 		return wareneinsatz;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((artikelName == null) ? 0 : artikelName.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(bruttoPreis);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(bruttoUmsatzProKarton);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((einheit == null) ? 0 : einheit.hashCode());
+		temp = Double.doubleToLongBits(einheitProBestellung);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(einkaufspreis);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(nettoPreis);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(nettoUmsatzProEinheit);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(nettoUmsatzProKarton);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(schwund);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(verkaufsfaktor);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(wareneinsatz);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FleischModel other = (FleischModel) obj;
+		if (artikelName == null) {
+			if (other.artikelName != null)
+				return false;
+		} else if (!artikelName.equals(other.artikelName))
+			return false;
+		if (Double.doubleToLongBits(bruttoPreis) != Double
+				.doubleToLongBits(other.bruttoPreis))
+			return false;
+		if (Double.doubleToLongBits(bruttoUmsatzProKarton) != Double
+				.doubleToLongBits(other.bruttoUmsatzProKarton))
+			return false;
+		if (einheit == null) {
+			if (other.einheit != null)
+				return false;
+		} else if (!einheit.equals(other.einheit))
+			return false;
+		if (Double.doubleToLongBits(einheitProBestellung) != Double
+				.doubleToLongBits(other.einheitProBestellung))
+			return false;
+		if (Double.doubleToLongBits(einkaufspreis) != Double
+				.doubleToLongBits(other.einkaufspreis))
+			return false;
+		if (Double.doubleToLongBits(nettoPreis) != Double
+				.doubleToLongBits(other.nettoPreis))
+			return false;
+		if (Double.doubleToLongBits(nettoUmsatzProEinheit) != Double
+				.doubleToLongBits(other.nettoUmsatzProEinheit))
+			return false;
+		if (Double.doubleToLongBits(nettoUmsatzProKarton) != Double
+				.doubleToLongBits(other.nettoUmsatzProKarton))
+			return false;
+		if (Double.doubleToLongBits(schwund) != Double
+				.doubleToLongBits(other.schwund))
+			return false;
+		if (Double.doubleToLongBits(verkaufsfaktor) != Double
+				.doubleToLongBits(other.verkaufsfaktor))
+			return false;
+		if (Double.doubleToLongBits(wareneinsatz) != Double
+				.doubleToLongBits(other.wareneinsatz))
+			return false;
+		return true;
+	}
 	
 }

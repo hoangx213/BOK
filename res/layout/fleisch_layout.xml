@@ -13,7 +13,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:stretchColumns="*"
-        tools:context=".MainActivity" >
+        tools:context=".FleischActivity" >
 
         <TableRow
             android:id="@+id/tableRow1"
@@ -153,5 +153,14 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="24px"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/fleischSaveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/einkaufssumme"
+        android:layout_below="@+id/einkaufssumme"
+        android:layout_marginTop="24dp"
+        android:text="Speichern" />
 
 </RelativeLayout>

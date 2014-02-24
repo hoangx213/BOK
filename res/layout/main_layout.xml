@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Button
+        android:id="@+id/fleischBtn"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Fleisch"
+        android:textSize="20pt" />
+
+    <Button
+        android:id="@+id/getraenkeBtn"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fleischBtn"
+        android:layout_centerHorizontal="true"
+        android:text="Getränke"
+        android:textSize="20pt" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:gravity="center"
+        android:text="Wählen Sie den gewünschten Bestellungssorte aus"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25pt" />
+
+</RelativeLayout>
