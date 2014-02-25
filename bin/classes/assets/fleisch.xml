@@ -2,7 +2,7 @@
 <fleisch>
     <item>
         <artikelName>Ente</artikelName>
-        <einheit>Stück</einheit>
+        <einheit>St.</einheit>
         <einheitProBestellung>10</einheitProBestellung>
         <schwund>0</schwund>
         <verkaufsfaktor>3.6</verkaufsfaktor>
