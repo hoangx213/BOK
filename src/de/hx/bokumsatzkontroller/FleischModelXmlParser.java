@@ -13,11 +13,11 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import android.content.Context;
 import android.os.Environment;
 
-public class FleischXmlParser {
+public class FleischModelXmlParser {
 
 	Context context;
 
-	public FleischXmlParser(Context context) {
+	public FleischModelXmlParser(Context context) {
 		this.context = context;
 	}
 
@@ -25,13 +25,13 @@ public class FleischXmlParser {
 			throws XmlPullParserException, IOException {
 
 		ArrayList<FleischModel> result = new ArrayList<FleischModel>();
-		XmlPullParser xpp = context.getResources().getXml(R.xml.fleisch);
-//		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-//		factory.setNamespaceAware(true);
-//		XmlPullParser xpp = factory.newPullParser();
-//		File xmlFile = new File(Environment.getExternalStorageDirectory() + "/BOK/fleisch.xml");
-//		FileInputStream fis = new FileInputStream(xmlFile);
-//		xpp.setInput(new InputStreamReader(fis));
+//		XmlPullParser xpp = context.getResources().getXml(R.xml.fleisch);
+		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+		factory.setNamespaceAware(true);
+		XmlPullParser xpp = factory.newPullParser();
+		File xmlFile = new File(Environment.getExternalStorageDirectory() + "/BOK/fleisch.xml");
+		FileInputStream fis = new FileInputStream(xmlFile);
+		xpp.setInput(new InputStreamReader(fis));
 		
 		int eventType = xpp.getEventType();
 		String nodeName;

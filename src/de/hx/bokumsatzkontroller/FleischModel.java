@@ -1,6 +1,9 @@
 package de.hx.bokumsatzkontroller;
 
-public class FleischModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class FleischModel implements Parcelable{
 
 	String artikelName, einheit;
 	double einheitProBestellung, schwund, verkaufsfaktor, bruttoPreis,
@@ -8,10 +11,14 @@ public class FleischModel {
 	double nettoUmsatzProKarton, bruttoUmsatzProKarton, nettoUmsatzProEinheit,
 			wareneinsatz;
 
-	public FleischModel(String artikelname, String einheit,
+	public FleischModel(String artikelName){
+		this.artikelName = artikelName;
+	}
+	
+	public FleischModel(String artikelName, String einheit,
 			double einheitProBestellung, double schwund, double verkaufsfaktor,
 			double bruttoPreis, double nettoPreis, double einkaufspreis) {
-		this.artikelName = artikelname;
+		this.artikelName = artikelName;
 		this.einheit = einheit;
 		this.einheitProBestellung = einheitProBestellung;
 		this.schwund = schwund;
@@ -156,5 +163,50 @@ public class FleischModel {
 			return false;
 		return true;
 	}
-	
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(artikelName);
+		dest.writeString(einheit);
+		dest.writeDouble(einheitProBestellung);
+		dest.writeDouble(schwund);
+		dest.writeDouble(verkaufsfaktor);
+		dest.writeDouble(bruttoPreis);
+		dest.writeDouble(nettoPreis);
+		dest.writeDouble(einkaufspreis);
+		dest.writeDouble(nettoUmsatzProKarton);
+		dest.writeDouble(bruttoUmsatzProKarton);
+		dest.writeDouble(nettoUmsatzProEinheit);
+		dest.writeDouble(wareneinsatz);
+	}
+	public static final Parcelable.Creator<FleischModel> CREATOR = new Parcelable.Creator<FleischModel>() {
+        public FleischModel createFromParcel(Parcel in) {
+            return new FleischModel(in);
+        }
+
+        public FleischModel[] newArray(int size) {
+            return new FleischModel[size];
+        }
+    };
+
+    private FleischModel(Parcel in) {
+    	artikelName = in.readString();
+    	einheit = in.readString();
+    	einheitProBestellung = in.readDouble();
+    	schwund = in.readDouble();
+    	verkaufsfaktor = in.readDouble();
+    	bruttoPreis = in.readDouble();
+    	nettoPreis = in.readDouble();
+    	einkaufspreis = in.readDouble();
+    	nettoUmsatzProKarton = in.readDouble();
+    	bruttoUmsatzProKarton = in.readDouble();
+    	nettoUmsatzProEinheit = in.readDouble();
+    	wareneinsatz = in.readDouble();
+    }
 }

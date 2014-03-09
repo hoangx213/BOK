@@ -27,8 +27,8 @@ public class FleischBestellungenXmlWriter {
 	};
 
 	public void writeFleischBestellungenXml(
-			ArrayList<FleischBestellung> fbList, double nettoUmsatzsumme,
-			double einkaufssumme) throws ParserConfigurationException, SAXException, IOException, TransformerFactoryConfigurationError, TransformerException {
+			ArrayList<FleischBestellungModel> fbList, double nettoUmsatzsumme,
+			double einkaufssumme, String bestellungsdatum, int daysFrom1970) throws ParserConfigurationException, SAXException, IOException, TransformerFactoryConfigurationError, TransformerException {
 		
 		File xmlFile = new File(Environment.getExternalStorageDirectory()
 				+ "/BOK", "fleisch_bestellungen.xml");
@@ -37,32 +37,60 @@ public class FleischBestellungenXmlWriter {
 		Document doc = docBuilder.parse(xmlFile);
 		
 		Node fbNode = doc.getFirstChild();
+		Node thisBestellung = doc.createElement("bestellung");
+		fbNode.appendChild(thisBestellung);
 		Node nettoUmsatzsummeNode = doc.createElement("nettoUmsatzsumme");
 		nettoUmsatzsummeNode.setTextContent(String.valueOf(nettoUmsatzsumme));
-		fbNode.appendChild(nettoUmsatzsummeNode);
+		thisBestellung.appendChild(nettoUmsatzsummeNode);
 		
 		Node einkaufssummeNode = doc.createElement("einkaufssumme");
 		einkaufssummeNode.setTextContent(String.valueOf(einkaufssumme));
-		fbNode.appendChild(einkaufssummeNode);
+		thisBestellung.appendChild(einkaufssummeNode);
 		
-		for(FleischBestellung i : fbList){
+		Node datumNode = doc.createElement("datum");
+		datumNode.setTextContent(String.valueOf(bestellungsdatum));
+		thisBestellung.appendChild(datumNode);
+		
+		Node daysFrom1970Node = doc.createElement("daysFrom1970");
+		daysFrom1970Node.setTextContent(String.valueOf(daysFrom1970));
+		thisBestellung.appendChild(daysFrom1970Node);
+		
+		for(FleischBestellungModel i : fbList){
 			Node itemNode = doc.createElement("item");
 			Node artikelNameNode = doc.createElement("artikelName");
 			artikelNameNode.setTextContent(i.getFleischModel().getArtikelName());
 			itemNode.appendChild(artikelNameNode);
+			Node proBestellung = doc.createElement("proBestellung");
+			proBestellung.setTextContent(String.valueOf(i.getProBestellung()));
+			itemNode.appendChild(proBestellung);
 			Node bestellungenNode = doc.createElement("bestellungen");
 			bestellungenNode.setTextContent(String.valueOf(i.getBestellungen()));
 			itemNode.appendChild(bestellungenNode);
 			Node totalNode = doc.createElement("total");
 			totalNode.setTextContent(String.valueOf(i.getTotal()));
 			itemNode.appendChild(totalNode);
-			Node umsatzNode = doc.createElement("nettoUmsatz");
-			umsatzNode.setTextContent(String.valueOf(i.getNettoUmsatz()));
-			itemNode.appendChild(umsatzNode);
-			Node einkaufTotalNode = doc.createElement("einkaufTotal");
-			einkaufTotalNode.setTextContent(String.valueOf(i.getEinkaufTotal()));
-			itemNode.appendChild(einkaufTotalNode);
-			fbNode.appendChild(itemNode);
+			Node einkaufspreis = doc.createElement("einkaufspreis");
+			einkaufspreis.setTextContent(String.valueOf(i.getEinkaufspreis()));
+			itemNode.appendChild(einkaufspreis);
+			Node nettoEinkauf = doc.createElement("nettoEinkauf");
+			nettoEinkauf.setTextContent(String.valueOf(i.getNettoEinkauf()));
+			itemNode.appendChild(nettoEinkauf);
+			Node bruttoEinkauf = doc.createElement("bruttoEinkauf");
+			bruttoEinkauf.setTextContent(String.valueOf(i.getBruttoEinkauf()));
+			itemNode.appendChild(bruttoEinkauf);
+			Node verkaufspreis = doc.createElement("verkaufspreis");
+			verkaufspreis.setTextContent(String.valueOf(i.getEinkaufspreis()));
+			itemNode.appendChild(verkaufspreis);
+			Node nettoUmsatz = doc.createElement("nettoUmsatz");
+			nettoUmsatz.setTextContent(String.valueOf(i.getNettoUmsatz()));
+			itemNode.appendChild(nettoUmsatz);
+			Node bruttoUmsatz = doc.createElement("bruttoUmsatz");
+			bruttoUmsatz.setTextContent(String.valueOf(i.getBruttoUmsatz()));
+			itemNode.appendChild(bruttoUmsatz);
+			Node wareneinsatz = doc.createElement("wareneinsatz");
+			wareneinsatz.setTextContent(String.valueOf(i.getWareneinsatz()));
+			itemNode.appendChild(wareneinsatz);
+			thisBestellung.appendChild(itemNode);
 		}
 		
 		

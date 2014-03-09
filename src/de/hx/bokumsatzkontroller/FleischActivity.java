@@ -3,6 +3,8 @@ package de.hx.bokumsatzkontroller;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,11 +15,14 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,9 +36,9 @@ import android.widget.TextView;
 public class FleischActivity extends Activity implements OnClickListener {
 
 	ArrayList<FleischModel> fleischList;
-	ArrayList<FleischBestellung> fleischBestellungenList;
-	Set<FleischBestellung> fleischBestellungenSet;
-	FleischXmlParser fleischXP;
+	ArrayList<FleischBestellungModel> fleischBestellungenList;
+	Set<FleischBestellungModel> fleischBestellungenSet;
+	FleischModelXmlParser fleischXP;
 	TableLayout table;
 	static final int PROBESTELLUNGID = 1111;
 	static final int TOTALID = 2222;
@@ -47,21 +52,34 @@ public class FleischActivity extends Activity implements OnClickListener {
 	static final int EINKAUFSPREISID = 1234;
 	static final int VERKAUFSPREISID = 4321;
 	DecimalFormat df = new DecimalFormat("#.##");
+	DecimalFormat prozentZahl = new DecimalFormat("#");
 	Button fleischSaveBtn;
 	double nettoUmsatzsumme = 0;
 	double nettoEinkaufssumme = 0;
+	int daysFrom1970;
+	String bestellungsdatum;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.fleisch_layout);
+		setContentView(R.layout.fleisch_bestellung);
+
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		Date d = new Date();
+		bestellungsdatum = DateFormat.format("MMMM d, yyyy ", d.getTime())
+				.toString();
+		actionBar.setTitle(bestellungsdatum);
+
+		Calendar calendar = Calendar.getInstance();
+		daysFrom1970 = (int) (calendar.getTimeInMillis() / (1000 * 3600 * 24));
 
 		fleischSaveBtn = (Button) findViewById(R.id.fleischSaveBtn);
 		fleischSaveBtn.setOnClickListener(this);
 		table = (TableLayout) findViewById(R.id.TableLayout1);
 		fleischList = new ArrayList<FleischModel>();
-		fleischBestellungenSet = new HashSet<FleischBestellung>();
-		fleischXP = new FleischXmlParser(getApplicationContext());
+		fleischBestellungenSet = new HashSet<FleischBestellungModel>();
+		fleischXP = new FleischModelXmlParser(getApplicationContext());
 
 		try {
 			fleischList = fleischXP.fleischParsen();
@@ -113,7 +131,7 @@ public class FleischActivity extends Activity implements OnClickListener {
 			total.setBackgroundResource(R.color.White);
 			total.setId(TOTALID);
 			tr.addView(total);
-			
+
 			EditText einkaufspreis = new EditText(this);
 			einkaufspreis.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
 			einkaufspreis.setText(String.valueOf(i.getEinkaufspreis()));
@@ -122,14 +140,14 @@ public class FleischActivity extends Activity implements OnClickListener {
 			einkaufspreis.setBackgroundResource(R.color.White);
 			einkaufspreis.setId(EINKAUFSPREISID);
 			tr.addView(einkaufspreis);
-			
+
 			TextView nettoEinkauf = new TextView(this);
 			nettoEinkauf.setTextAppearance(this,
 					android.R.style.TextAppearance_Large);
 			nettoEinkauf.setBackgroundResource(R.color.White);
 			nettoEinkauf.setId(NETTOEINKAUFID);
 			tr.addView(nettoEinkauf);
-			
+
 			TextView bruttoEinkauf = new TextView(this);
 			bruttoEinkauf.setTextAppearance(this,
 					android.R.style.TextAppearance_Large);
@@ -166,10 +184,9 @@ public class FleischActivity extends Activity implements OnClickListener {
 			wareneinsatz.setBackgroundResource(R.color.White);
 			wareneinsatz.setId(WARENEINSATZID);
 			tr.addView(wareneinsatz);
-			
+
 			TextView anteil = new TextView(this);
-			anteil.setTextAppearance(this,
-					android.R.style.TextAppearance_Large);
+			anteil.setTextAppearance(this, android.R.style.TextAppearance_Large);
 			anteil.setBackgroundResource(R.color.White);
 			anteil.setId(ANTEILID);
 			tr.addView(anteil);
@@ -245,10 +262,10 @@ public class FleischActivity extends Activity implements OnClickListener {
 
 			bestellungen.addTextChangedListener(new MyTextWatcher(bestellungen,
 					fleischList.indexOf(i)));
-			einkaufspreis.addTextChangedListener(new MyTextWatcher(einkaufspreis,
-					fleischList.indexOf(i)));
-			verkaufspreis.addTextChangedListener(new MyTextWatcher(verkaufspreis,
-					fleischList.indexOf(i)));
+			einkaufspreis.addTextChangedListener(new MyTextWatcher(
+					einkaufspreis, fleischList.indexOf(i)));
+			verkaufspreis.addTextChangedListener(new MyTextWatcher(
+					verkaufspreis, fleischList.indexOf(i)));
 		}
 
 	}
@@ -273,51 +290,66 @@ public class FleischActivity extends Activity implements OnClickListener {
 		@Override
 		public void afterTextChanged(Editable s) {
 			TableRow tr = (TableRow) view.getParent();
-			EditText bestellungenView = (EditText) tr.findViewById(BESTELLUNGENID);
-			EditText einkaufspreisView = (EditText) tr.findViewById(EINKAUFSPREISID);
-			EditText verkaufspreisView = (EditText) tr.findViewById(VERKAUFSPREISID);
+			EditText bestellungenView = (EditText) tr
+					.findViewById(BESTELLUNGENID);
+			EditText einkaufspreisView = (EditText) tr
+					.findViewById(EINKAUFSPREISID);
+			EditText verkaufspreisView = (EditText) tr
+					.findViewById(VERKAUFSPREISID);
 			int bestellungen = 0;
 			double einkaufspreis = 0, verkaufspreis = 0;
 			if (s.toString().equals("")) {
-				switch(view.getId()){
+				switch (view.getId()) {
 				case BESTELLUNGENID:
 					bestellungen = 0;
-					einkaufspreis = Double.valueOf(einkaufspreisView.getText().toString());
-					verkaufspreis = Double.valueOf(verkaufspreisView.getText().toString());
+					einkaufspreis = Double.valueOf(einkaufspreisView.getText()
+							.toString());
+					verkaufspreis = Double.valueOf(verkaufspreisView.getText()
+							.toString());
 					break;
 				case EINKAUFSPREISID:
-					bestellungen = Integer.valueOf(bestellungenView.getText().toString());
+					bestellungen = Integer.valueOf(bestellungenView.getText()
+							.toString());
 					einkaufspreis = 0;
-					verkaufspreis = Double.valueOf(verkaufspreisView.getText().toString());
+					verkaufspreis = Double.valueOf(verkaufspreisView.getText()
+							.toString());
 					break;
 				case VERKAUFSPREISID:
-					bestellungen = Integer.valueOf(bestellungenView.getText().toString());
-					einkaufspreis = Double.valueOf(einkaufspreisView.getText().toString());
+					bestellungen = Integer.valueOf(bestellungenView.getText()
+							.toString());
+					einkaufspreis = Double.valueOf(einkaufspreisView.getText()
+							.toString());
 					verkaufspreis = 0;
 					break;
-					default: break;
+				default:
+					break;
 				}
 			} else {
-				bestellungen = Integer.valueOf(bestellungenView.getText().toString());
-				einkaufspreis = Double.valueOf(einkaufspreisView.getText().toString());
-				verkaufspreis = Double.valueOf(verkaufspreisView.getText().toString());
+				bestellungen = Integer.valueOf(bestellungenView.getText()
+						.toString());
+				einkaufspreis = Double.valueOf(einkaufspreisView.getText()
+						.toString());
+				verkaufspreis = Double.valueOf(verkaufspreisView.getText()
+						.toString());
 			}
 			TextView totalView = (TextView) tr.findViewById(TOTALID);
 			TextView nettoUmsatzView = (TextView) tr
 					.findViewById(NETTOUMSATZID);
 			TextView nettoEinkaufView = (TextView) tr
 					.findViewById(NETTOEINKAUFID);
-			TextView bruttoEinkaufView = (TextView) tr.findViewById(BRUTTOEINKAUFID);
-			TextView bruttoUmsatzView = (TextView) tr.findViewById(BRUTTOUMSATZID);
-			TextView wareneinsatzView = (TextView) tr.findViewById(WARENEINSATZID);
-			TextView anteilView = (TextView) tr.findViewById(ANTEILID);
+			TextView bruttoEinkaufView = (TextView) tr
+					.findViewById(BRUTTOEINKAUFID);
+			TextView bruttoUmsatzView = (TextView) tr
+					.findViewById(BRUTTOUMSATZID);
+			TextView wareneinsatzView = (TextView) tr
+					.findViewById(WARENEINSATZID);
 			TextView nettoUmsatzssummeView = (TextView) findViewById(R.id.nettoUmsatzSumme);
 			TextView einkaufssummeView = (TextView) findViewById(R.id.einkaufssumme);
-			
+
 			FleischModel fleisch = fleischList.get(index);
 
-			double totalBestellung = bestellungen
-					* fleisch.einheitProBestellung;
+			int totalBestellung = (int) (bestellungen
+					* fleisch.einheitProBestellung);
 			totalView.setText(String.valueOf(totalBestellung));
 
 			double verkaufsmenge = totalBestellung
@@ -328,19 +360,15 @@ public class FleischActivity extends Activity implements OnClickListener {
 
 			double nettoEinkauf = totalBestellung * einkaufspreis;
 			nettoEinkaufView.setText(df.format(nettoEinkauf));
-			
+
 			double bruttoEinkauf = nettoEinkauf * 1.12;
 			bruttoEinkaufView.setText(df.format(bruttoEinkauf));
-			
+
 			double bruttoUmsatz = nettoUmsatz * 1.12;
 			bruttoUmsatzView.setText(df.format(bruttoUmsatz));
-			
-			double wareneinsatz = nettoEinkauf/nettoUmsatz;
-			wareneinsatzView.setText(df.format(wareneinsatz*100) + "%");
 
-			FleischBestellung fb = new FleischBestellung(fleisch, bestellungen,
-					totalBestellung, nettoUmsatz, nettoEinkauf);
-			fleischBestellungenSet.add(fb);
+			double wareneinsatz = nettoEinkauf / nettoUmsatz;
+			wareneinsatzView.setText(df.format(wareneinsatz * 100) + "%");
 
 			TableLayout tl = (TableLayout) tr.getParent();
 			nettoUmsatzsumme = 0;
@@ -352,7 +380,7 @@ public class FleischActivity extends Activity implements OnClickListener {
 							.valueOf(((String) ((TextView) thisTr
 									.findViewById(NETTOUMSATZID)).getText())
 									.replace(",", "."));
-					nettoUmsatzsumme += thisNettoUmsatz; 
+					nettoUmsatzsumme += thisNettoUmsatz;
 				}
 				if (((TextView) thisTr.findViewById(NETTOEINKAUFID)).getText() != "") {
 					double thisEinkaufTotal = Double
@@ -362,11 +390,31 @@ public class FleischActivity extends Activity implements OnClickListener {
 					nettoEinkaufssumme += thisEinkaufTotal;
 				}
 			}
+
+			for (int j = 0; j < tl.getChildCount() - 1; j++) {
+				TableRow thisTr = (TableRow) tl.getChildAt(j + 1);
+				TextView thisAnteilView = (TextView) thisTr
+						.findViewById(ANTEILID);
+				if (((TextView) thisTr.findViewById(NETTOUMSATZID)).getText() != "") {
+					double thisNettoUmsatz = Double
+							.valueOf(((String) ((TextView) thisTr
+									.findViewById(NETTOUMSATZID)).getText())
+									.replace(",", "."));
+					double thisAnteil = thisNettoUmsatz / nettoUmsatzsumme;
+					String gerundeteAnteil = prozentZahl
+							.format(thisAnteil * 100);
+					thisAnteilView.setText(gerundeteAnteil + "%");
+				}
+			}
 			nettoUmsatzssummeView.setText(df.format(nettoUmsatzsumme) + "€");
 			einkaufssummeView.setText(df.format(nettoEinkaufssumme) + "€");
-			//TODO: anteil cho tung artikel
-			double anteil = nettoUmsatz/nettoUmsatzsumme;
-			anteilView.setText(df.format(anteil*100) + "%");
+			String proBestellung = ((TextView) tr.findViewById(PROBESTELLUNGID))
+					.getText().toString();
+			FleischBestellungModel fb = new FleischBestellungModel(fleisch,
+					proBestellung, bestellungen, totalBestellung,
+					einkaufspreis, nettoEinkauf, bruttoEinkauf, verkaufspreis,
+					nettoUmsatz, bruttoUmsatz, wareneinsatz);
+			fleischBestellungenSet.add(fb);
 		}
 
 		@Override
@@ -389,13 +437,13 @@ public class FleischActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.fleischSaveBtn:
-			fleischBestellungenList = new ArrayList<FleischBestellung>(
+			fleischBestellungenList = new ArrayList<FleischBestellungModel>(
 					fleischBestellungenSet);
 			FleischBestellungenXmlWriter fbw = new FleischBestellungenXmlWriter();
 			try {
-
 				fbw.writeFleischBestellungenXml(fleischBestellungenList,
-						nettoUmsatzsumme, nettoEinkaufssumme);
+						nettoUmsatzsumme, nettoEinkaufssumme, bestellungsdatum,
+						daysFrom1970);
 			} catch (TransformerFactoryConfigurationError e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -413,6 +461,8 @@ public class FleischActivity extends Activity implements OnClickListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			Intent intent = new Intent(this, FleischBestellungenActivity.class);
+			startActivity(intent);
 		}
 	}
 
