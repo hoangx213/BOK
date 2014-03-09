@@ -23,6 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name="de.hx.bokumsatzkontroller.FleischActivity"></activity>
+        <activity android:name="FleischBestellungenActivity"></activity>
+        <activity android:name="FleischBestellungNachschauActivity"></activity>
     </application>
 
 </manifest>

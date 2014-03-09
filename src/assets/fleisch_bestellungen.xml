@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fleischBestellungen>
-    <artikelName>Ente</artikelName>
-    <bestellungen>10</bestellungen>
-    <total>100</total>
-    <nettoUmsatz>6666</nettoUmsatz>
-    <einkaufTotal>999</einkaufTotal>
 </fleischBestellungen>
     
