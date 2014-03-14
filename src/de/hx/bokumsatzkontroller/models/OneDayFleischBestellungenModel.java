@@ -1,4 +1,4 @@
-package de.hx.bokumsatzkontroller;
+package de.hx.bokumsatzkontroller.models;
 
 import java.util.ArrayList;
 
@@ -10,6 +10,7 @@ public class OneDayFleischBestellungenModel implements Parcelable{
 	int daysFrom1970;
 	ArrayList<FleischBestellungModel> fleischbestellungen;
 	double nettoUmsatzssumme, einkaufssumme;
+	String bestellungID;
 	public OneDayFleischBestellungenModel(String datum, int daysFrom1970,
 			ArrayList<FleischBestellungModel> fleischbestellungen,
 			double nettoUmsatzssumme, double einkaufssumme) {
@@ -50,6 +51,13 @@ public class OneDayFleischBestellungenModel implements Parcelable{
 	}
 	public void setEinkaufssumme(double einkaufssumme) {
 		this.einkaufssumme = einkaufssumme;
+	}
+	
+	public void setBestellungID(String id){
+		this.bestellungID = id;
+	}
+	public String getBestellungID(){
+		return this.bestellungID;
 	}
 	
 	public String toString(){

@@ -6,43 +6,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <LinearLayout
-            android:id="@+id/datumFleischBestellung"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/datumText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Datum:  "
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <TextView
-                android:id="@+id/datumFleischBestellungTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <Button
-                android:id="@+id/datumBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Datum auswählen" />
-        </LinearLayout>
-
         <HorizontalScrollView
             android:id="@+id/scrollView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/datumFleischBestellung"
             android:scrollbars="vertical|horizontal" >
 
             <TableLayout
-                android:id="@+id/TableLayout1"
+                android:id="@+id/tableLayout2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/AntiqueWhite"
@@ -70,42 +41,12 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="pro Bes."
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="Bes."
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
                         android:id="@+id/textView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dip"
                         android:background="@color/White"
                         android:text="Total"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/bisDatumFBTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="Einkaufspr."
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textStyle="bold" />
 
@@ -126,16 +67,6 @@
                         android:layout_margin="2dip"
                         android:background="@color/White"
                         android:text="Brut.Einkauf"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/vonDatumFBTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="Verkaufspr"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textStyle="bold" />
 
@@ -182,16 +113,8 @@
             </TableLayout>
         </HorizontalScrollView>
 
-        <Button
-            android:id="@+id/fleischSaveBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/bestellungssumme"
-            android:text="Speichern" />
-
         <TableLayout
-            android:id="@+id/bestellungssumme"
+            android:id="@+id/berichtBestellungssumme"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/scrollView1" >
@@ -212,15 +135,14 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/nettoEinkaufssumme"
+                    android:id="@+id/berichtNettoEinkaufTotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="21dp"
                     android:text="0.0€"
+                    android:layout_marginLeft="21dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </TableRow>
 
             <TableRow
@@ -239,7 +161,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/nettoUmsatzSumme"
+                    android:id="@+id/berichtNettoUmsatzTotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="21dp"

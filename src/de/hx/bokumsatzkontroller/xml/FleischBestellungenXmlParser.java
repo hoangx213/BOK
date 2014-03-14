@@ -1,4 +1,4 @@
-package de.hx.bokumsatzkontroller;
+package de.hx.bokumsatzkontroller.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
+
+import de.hx.bokumsatzkontroller.models.FleischBestellungModel;
+import de.hx.bokumsatzkontroller.models.FleischModel;
+import de.hx.bokumsatzkontroller.models.OneDayFleischBestellungenModel;
 
 import android.content.Context;
 import android.os.Environment;
@@ -31,7 +35,8 @@ public class FleischBestellungenXmlParser {
 		XmlPullParser xpp = factory.newPullParser();
 		File xmlFile = new File(Environment.getExternalStorageDirectory()
 				+ "/BOK/fleisch_bestellungen.xml");
-		if(!xmlFile.exists()) return null;
+		if (!xmlFile.exists())
+			return null;
 		FileInputStream fis = new FileInputStream(xmlFile);
 		xpp.setInput(new InputStreamReader(fis));
 
@@ -46,6 +51,7 @@ public class FleischBestellungenXmlParser {
 					OneDayFleischBestellungenModel thisDayFleischBestellung;
 					String bestellungsdatum = "";
 					int daysFrom1970 = 0;
+					String bestellungID = "";
 					double nettoUmsatzsumme = 0, einkaufssumme = 0;
 					ArrayList<FleischBestellungModel> thisDayFleischBestellungenList = new ArrayList<FleischBestellungModel>();
 					while (!nodeName.contentEquals("bestellung")) {
@@ -53,6 +59,12 @@ public class FleischBestellungenXmlParser {
 								&& eventType == XmlPullParser.START_TAG) {
 							eventType = xpp.next();
 							nettoUmsatzsumme = Double.valueOf(xpp.getText());
+						}
+
+						else if (nodeName.contentEquals("bestellungID")
+								&& eventType == XmlPullParser.START_TAG) {
+							eventType = xpp.next();
+							bestellungID = xpp.getText();
 						}
 
 						else if (nodeName.contentEquals("einkaufssumme")
@@ -155,15 +167,20 @@ public class FleischBestellungenXmlParser {
 									einkaufspreis, nettoEinkauf, bruttoEinkauf,
 									verkaufspreis, nettoUmsatz, bruttoUmsatz,
 									wareneinsatz);
-							thisDayFleischBestellungenList.add(fleischBestellung);
+							thisDayFleischBestellungenList
+									.add(fleischBestellung);
 						}
 						eventType = xpp.next();
 						nodeName = (xpp.getName() != null ? xpp.getName() : "");
 					}
-					thisDayFleischBestellung = new OneDayFleischBestellungenModel(bestellungsdatum, daysFrom1970, thisDayFleischBestellungenList, nettoUmsatzsumme, einkaufssumme);
+					thisDayFleischBestellung = new OneDayFleischBestellungenModel(
+							bestellungsdatum, daysFrom1970,
+							thisDayFleischBestellungenList, nettoUmsatzsumme,
+							einkaufssumme);
+					thisDayFleischBestellung.setBestellungID(bestellungID);
 					result.add(thisDayFleischBestellung);
 				}
-				
+
 				eventType = xpp.next();
 				nodeName = (xpp.getName() != null ? xpp.getName() : "");
 			}

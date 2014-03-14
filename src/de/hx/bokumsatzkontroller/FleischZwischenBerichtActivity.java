@@ -2,14 +2,16 @@ package de.hx.bokumsatzkontroller;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
-import org.xmlpull.v1.XmlPullParserException;
 
+import de.hx.bokumsatzkontroller.models.ArtikelBerichtModel;
 import de.hx.bokumsatzkontroller.models.FleischBestellungModel;
 import de.hx.bokumsatzkontroller.models.OneDayFleischBestellungenModel;
+import de.hx.bokumsatzkontroller.util.Utils;
 import de.hx.bokumsatzkontroller.xml.XmlParserHelper;
 
 import android.app.ActionBar;
@@ -17,52 +19,38 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class FleischBestellungNachschauActivity extends Activity {
+public class FleischZwischenBerichtActivity extends Activity {
 
 	TableLayout table;
-	TextView nettoUmsatzssummeView;
-	TextView nettoEinkaufssummeView;
-	OneDayFleischBestellungenModel thisDayBestellungen;
+	TextView nettoUmsatzTotalView;
+	TextView nettoEinkaufTotalView;
 	DecimalFormat df = new DecimalFormat("#.##");
 	DecimalFormat prozentZahl = new DecimalFormat("#");
+	XmlParserHelper xmlPH;
+	int vonDaysFrom1970, bisDaysFrom1970;
+	ArrayList<OneDayFleischBestellungenModel> daysFBList = new ArrayList<OneDayFleischBestellungenModel>();
+	ArrayList<ArtikelBerichtModel> fleischBerichtList = new ArrayList<ArtikelBerichtModel>();
+	double nettoEinkaufTotal = 0, nettoUmsatzTotal = 0;
+	Utils utils = new Utils();
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.fleisch_bestellung);
-		Button speichernBtn = (Button) findViewById(R.id.fleischSaveBtn);
-		speichernBtn.setVisibility(View.GONE);
-		LinearLayout datum = (LinearLayout) findViewById(R.id.datumFleischBestellung);
-		datum.setVisibility(View.GONE);
-		table = (TableLayout) findViewById(R.id.TableLayout1);
-		nettoUmsatzssummeView = (TextView) findViewById(R.id.nettoUmsatzSumme);
-		nettoEinkaufssummeView = (TextView) findViewById(R.id.nettoEinkaufssumme);
-		Intent intent = getIntent();
-		String bestellungID = intent.getStringExtra("BestellungID");
-		XmlParserHelper xph = new XmlParserHelper();
-		try {
-			thisDayBestellungen = xph.getOneDayFBWithBestellungID(bestellungID);
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (XmlPullParserException e) {
-			e.printStackTrace();
-		}
+		setContentView(R.layout.fleisch_zwischenbericht);
+		table = (TableLayout) findViewById(R.id.tableLayout2);
+		nettoUmsatzTotalView = (TextView) findViewById(R.id.berichtNettoUmsatzTotal);
+		nettoEinkaufTotalView = (TextView) findViewById(R.id.berichtNettoEinkaufTotal);
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(thisDayBestellungen.getDatum());
-		renderDayBestellungTablle();
+		actionBar.setTitle("Fleischbestellungsbericht");
+		getBerichtList();
+		renderBerichtTablle();
 	}
 	
 	@Override
@@ -70,10 +58,51 @@ public class FleischBestellungNachschauActivity extends Activity {
 		startActivity(new Intent(this, FleischBestellungenActivity.class));
 		return true;
 	}
-
-	void renderDayBestellungTablle() {
-		for (FleischBestellungModel i : thisDayBestellungen
-				.getFleischbestellungen()) {
+	
+	void getBerichtList(){
+		xmlPH = new XmlParserHelper();
+		Intent intent = getIntent();
+		vonDaysFrom1970 = intent.getIntExtra("vonDaysFrom1970", 0);
+		bisDaysFrom1970 = intent.getIntExtra("bisDaysFrom1970", 0);
+		try {
+			daysFBList = xmlPH.getDaysFleischBestellungen(vonDaysFrom1970,
+					bisDaysFrom1970);
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (OneDayFleischBestellungenModel thisOneDayFB : daysFBList) {
+			nettoEinkaufTotal += thisOneDayFB.getEinkaufssumme();
+			nettoUmsatzTotal += thisOneDayFB.getNettoUmsatzssumme();
+			for (FleischBestellungModel thisFB : thisOneDayFB
+					.getFleischbestellungen()) {
+				String thisArtikelName = thisFB.getFleischModel()
+						.getArtikelName();
+				ArtikelBerichtModel thisFAB = utils.getABWithArtikelNameFromList(
+						fleischBerichtList, thisArtikelName);
+				if (thisFAB == null) {
+					ArtikelBerichtModel newFAB = new ArtikelBerichtModel(
+							thisArtikelName, thisFB.getTotal(),
+							thisFB.getNettoEinkauf(),
+							thisFB.getBruttoEinkauf(), thisFB.getNettoUmsatz(),
+							thisFB.getBruttoUmsatz());
+					fleischBerichtList.add(newFAB);
+				} else {
+					thisFAB.addBruttoEinkauf(thisFB.getBruttoEinkauf());
+					thisFAB.addBruttoUmsatz(thisFB.getBruttoUmsatz());
+					thisFAB.addNettoEinkauf(thisFB.getNettoEinkauf());
+					thisFAB.addNettoUmsatz(thisFB.getNettoUmsatz());
+					thisFAB.addTotal(thisFB.getTotal());
+				}
+			}
+		}
+	}
+	
+	void renderBerichtTablle() {
+		for (ArtikelBerichtModel i : fleischBerichtList) {
 			TableRow tr = new TableRow(this);
 			TableLayout.LayoutParams tableRowParams = new TableLayout.LayoutParams(
 					TableLayout.LayoutParams.WRAP_CONTENT,
@@ -85,38 +114,17 @@ public class FleischBestellungNachschauActivity extends Activity {
 			tr.setBackgroundResource(R.color.Brown);
 
 			TextView artikelName = new TextView(this);
-			artikelName.setText(i.getFleischModel().getArtikelName());
+			artikelName.setText(i.getArtikelName());
 			artikelName.setTextAppearance(this,
 					android.R.style.TextAppearance_Large);
 			artikelName.setBackgroundResource(R.color.White);
 			tr.addView(artikelName);
-
-			TextView proBestell = new TextView(this);
-			proBestell.setText(i.getProBestellung());
-			proBestell.setTextAppearance(this,
-					android.R.style.TextAppearance_Large);
-			proBestell.setBackgroundResource(R.color.White);
-			tr.addView(proBestell);
-
-			TextView bestellungen = new TextView(this);
-			bestellungen.setText(String.valueOf(i.getBestellungen()));
-			bestellungen.setTextAppearance(this,
-					android.R.style.TextAppearance_Large);
-			bestellungen.setBackgroundResource(R.color.White);
-			tr.addView(bestellungen);
 
 			TextView total = new TextView(this);
 			total.setText(String.valueOf(i.getTotal()));
 			total.setTextAppearance(this, android.R.style.TextAppearance_Large);
 			total.setBackgroundResource(R.color.White);
 			tr.addView(total);
-
-			TextView einkaufspreis = new TextView(this);
-			einkaufspreis.setText(String.valueOf(i.getEinkaufspreis())+"€");
-			einkaufspreis.setTextAppearance(this,
-					android.R.style.TextAppearance_Large);
-			einkaufspreis.setBackgroundResource(R.color.White);
-			tr.addView(einkaufspreis);
 
 			TextView nettoEinkauf = new TextView(this);
 			nettoEinkauf.setText(df.format(i.getNettoEinkauf())+"€");
@@ -131,13 +139,6 @@ public class FleischBestellungNachschauActivity extends Activity {
 					android.R.style.TextAppearance_Large);
 			bruttoEinkauf.setBackgroundResource(R.color.White);
 			tr.addView(bruttoEinkauf);
-
-			TextView verkaufspreis = new TextView(this);
-			verkaufspreis.setText(String.valueOf(i.getVerkaufspreis())+"€");
-			verkaufspreis.setTextAppearance(this,
-					android.R.style.TextAppearance_Large);
-			verkaufspreis.setBackgroundResource(R.color.White);
-			tr.addView(verkaufspreis);
 
 			TextView nettoUmsatz = new TextView(this);
 			nettoUmsatz.setText(df.format(i.getNettoUmsatz())+"€");
@@ -154,24 +155,21 @@ public class FleischBestellungNachschauActivity extends Activity {
 			tr.addView(bruttoUmsatz);
 
 			TextView wareneinsatz = new TextView(this);
-			wareneinsatz.setText(df.format(i.getWareneinsatz()*100)+"%");
+			wareneinsatz.setText(df.format(100*i.getNettoEinkauf()/i.getNettoUmsatz())+"%");
 			wareneinsatz.setTextAppearance(this,
 					android.R.style.TextAppearance_Large);
 			wareneinsatz.setBackgroundResource(R.color.White);
 			tr.addView(wareneinsatz);
 
 			TextView anteil = new TextView(this);
-			anteil.setText(prozentZahl.format((i.getNettoUmsatz() / thisDayBestellungen
-					.getNettoUmsatzssumme()) * 100)
+			anteil.setText(prozentZahl.format((i.getNettoUmsatz() / nettoUmsatzTotal) * 100)
 					+ "%");
 			anteil.setTextAppearance(this, android.R.style.TextAppearance_Large);
 			anteil.setBackgroundResource(R.color.White);
 			tr.addView(anteil);
 
-			nettoEinkaufssummeView.setText(df.format(thisDayBestellungen
-					.getEinkaufssumme()) + "€");
-			nettoUmsatzssummeView.setText(df.format(thisDayBestellungen
-					.getNettoUmsatzssumme()) + "€");
+			nettoUmsatzTotalView.setText(df.format(nettoUmsatzTotal) + "€");
+			nettoEinkaufTotalView.setText(df.format(nettoEinkaufTotal) + "€");
 
 			table.addView(tr);
 			TableLayout.LayoutParams tlp = (TableLayout.LayoutParams) tr
@@ -186,32 +184,12 @@ public class FleischBestellungNachschauActivity extends Activity {
 			lp.leftMargin = 2;
 			lp.bottomMargin = -2;
 			lp.rightMargin = 2;
-			lp = (LinearLayout.LayoutParams) proBestell.getLayoutParams();
-			lp.topMargin = -2;
-			lp.leftMargin = 2;
-			lp.bottomMargin = -2;
-			lp.rightMargin = 2;
-			lp = (LinearLayout.LayoutParams) bestellungen.getLayoutParams();
-			lp.topMargin = -2;
-			lp.leftMargin = 2;
-			lp.bottomMargin = -2;
-			lp.rightMargin = 2;
 			lp = (LinearLayout.LayoutParams) total.getLayoutParams();
 			lp.topMargin = -2;
 			lp.leftMargin = 2;
 			lp.bottomMargin = -2;
 			lp.rightMargin = 2;
-			lp = (LinearLayout.LayoutParams) verkaufspreis.getLayoutParams();
-			lp.topMargin = -2;
-			lp.leftMargin = 2;
-			lp.bottomMargin = -2;
-			lp.rightMargin = 2;
 			lp = (LinearLayout.LayoutParams) nettoUmsatz.getLayoutParams();
-			lp.topMargin = -2;
-			lp.leftMargin = 2;
-			lp.bottomMargin = -2;
-			lp.rightMargin = 2;
-			lp = (LinearLayout.LayoutParams) einkaufspreis.getLayoutParams();
 			lp.topMargin = -2;
 			lp.leftMargin = 2;
 			lp.bottomMargin = -2;
@@ -243,4 +221,5 @@ public class FleischBestellungNachschauActivity extends Activity {
 			lp.rightMargin = 2;
 		}
 	}
+
 }

@@ -2,11 +2,12 @@ package de.hx.bokumsatzkontroller;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -15,15 +16,23 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlPullParserException;
 
+import de.hx.bokumsatzkontroller.models.FleischBestellungModel;
+import de.hx.bokumsatzkontroller.models.FleischModel;
+import de.hx.bokumsatzkontroller.util.DatePickerFragment;
+import de.hx.bokumsatzkontroller.xml.FleischBestellungenXmlWriter;
+import de.hx.bokumsatzkontroller.xml.FleischModelXmlParser;
+
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.text.format.DateFormat;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -32,14 +41,19 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class FleischActivity extends Activity implements OnClickListener {
+@SuppressLint("SimpleDateFormat")
+public class FleischActivity extends FragmentActivity implements
+		OnClickListener {
 
 	ArrayList<FleischModel> fleischList;
 	ArrayList<FleischBestellungModel> fleischBestellungenList;
-	Set<FleischBestellungModel> fleischBestellungenSet;
+	HashSet<FleischBestellungModel> fleischBestellungenSet;
 	FleischModelXmlParser fleischXP;
 	TableLayout table;
+	TextView datumFleischBestellungView;
+	Button datumBtn;
 	static final int PROBESTELLUNGID = 1111;
 	static final int TOTALID = 2222;
 	static final int NETTOUMSATZID = 3333;
@@ -66,17 +80,13 @@ public class FleischActivity extends Activity implements OnClickListener {
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		Date d = new Date();
-		bestellungsdatum = DateFormat.format("MMMM d, yyyy ", d.getTime())
-				.toString();
-		actionBar.setTitle(bestellungsdatum);
-
-		Calendar calendar = Calendar.getInstance();
-		daysFrom1970 = (int) (calendar.getTimeInMillis() / (1000 * 3600 * 24));
+		actionBar.setTitle("Fleischbestellung");
 
 		fleischSaveBtn = (Button) findViewById(R.id.fleischSaveBtn);
 		fleischSaveBtn.setOnClickListener(this);
 		table = (TableLayout) findViewById(R.id.TableLayout1);
+		datumFleischBestellungView = (TextView) findViewById(R.id.datumFleischBestellungTextView);
+		datumBtn = (Button) findViewById(R.id.datumBtn);
 		fleischList = new ArrayList<FleischModel>();
 		fleischBestellungenSet = new HashSet<FleischBestellungModel>();
 		fleischXP = new FleischModelXmlParser(getApplicationContext());
@@ -90,6 +100,8 @@ public class FleischActivity extends Activity implements OnClickListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		datumBtn.setOnClickListener(this);
 
 		for (FleischModel i : fleischList) {
 			TableRow tr = new TableRow(this);
@@ -119,7 +131,7 @@ public class FleischActivity extends Activity implements OnClickListener {
 			tr.addView(proBestell);
 
 			EditText bestellungen = new EditText(this);
-			bestellungen.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+			bestellungen.setInputType(InputType.TYPE_CLASS_NUMBER);
 			bestellungen.setTextAppearance(this,
 					android.R.style.TextAppearance_Large);
 			bestellungen.setBackgroundResource(R.color.LightGrey);
@@ -133,7 +145,7 @@ public class FleischActivity extends Activity implements OnClickListener {
 			tr.addView(total);
 
 			EditText einkaufspreis = new EditText(this);
-			einkaufspreis.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+			einkaufspreis.setInputType(InputType.TYPE_CLASS_PHONE);
 			einkaufspreis.setText(String.valueOf(i.getEinkaufspreis()));
 			einkaufspreis.setTextAppearance(this,
 					android.R.style.TextAppearance_Large);
@@ -156,7 +168,7 @@ public class FleischActivity extends Activity implements OnClickListener {
 			tr.addView(bruttoEinkauf);
 
 			EditText verkaufspreis = new EditText(this);
-			verkaufspreis.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+			verkaufspreis.setInputType(InputType.TYPE_CLASS_PHONE);
 			verkaufspreis.setText(String.valueOf(i.getNettoPreis()));
 			verkaufspreis.setTextAppearance(this,
 					android.R.style.TextAppearance_Large);
@@ -271,6 +283,12 @@ public class FleischActivity extends Activity implements OnClickListener {
 	}
 
 	@Override
+	public boolean onOptionsItemSelected(MenuItem menuItem) {
+		startActivity(new Intent(this, FleischBestellungenActivity.class));
+		return true;
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -325,12 +343,15 @@ public class FleischActivity extends Activity implements OnClickListener {
 					break;
 				}
 			} else {
-				bestellungen = Integer.valueOf(bestellungenView.getText()
-						.toString());
-				einkaufspreis = Double.valueOf(einkaufspreisView.getText()
-						.toString());
-				verkaufspreis = Double.valueOf(verkaufspreisView.getText()
-						.toString());
+				bestellungen = ((bestellungenView.getText()
+						.toString()).equals("") ? 0 : Integer.valueOf(bestellungenView.getText()
+						.toString()));
+				einkaufspreis = ((einkaufspreisView.getText()
+						.toString()).equals("") ? 0 : Double.valueOf(einkaufspreisView.getText()
+						.toString())); 
+				verkaufspreis = ((verkaufspreisView.getText()
+						.toString()).equals("") ? 0 : Double.valueOf(verkaufspreisView.getText()
+						.toString())); 
 			}
 			TextView totalView = (TextView) tr.findViewById(TOTALID);
 			TextView nettoUmsatzView = (TextView) tr
@@ -344,12 +365,11 @@ public class FleischActivity extends Activity implements OnClickListener {
 			TextView wareneinsatzView = (TextView) tr
 					.findViewById(WARENEINSATZID);
 			TextView nettoUmsatzssummeView = (TextView) findViewById(R.id.nettoUmsatzSumme);
-			TextView einkaufssummeView = (TextView) findViewById(R.id.einkaufssumme);
+			TextView einkaufssummeView = (TextView) findViewById(R.id.nettoEinkaufssumme);
 
 			FleischModel fleisch = fleischList.get(index);
 
-			int totalBestellung = (int) (bestellungen
-					* fleisch.einheitProBestellung);
+			int totalBestellung = (int) (bestellungen * fleisch.getEinheitProBestellung());
 			totalView.setText(String.valueOf(totalBestellung));
 
 			double verkaufsmenge = totalBestellung
@@ -414,7 +434,11 @@ public class FleischActivity extends Activity implements OnClickListener {
 					proBestellung, bestellungen, totalBestellung,
 					einkaufspreis, nettoEinkauf, bruttoEinkauf, verkaufspreis,
 					nettoUmsatz, bruttoUmsatz, wareneinsatz);
-			fleischBestellungenSet.add(fb);
+
+			if (!fleischBestellungenSet.add(fb)) {
+				fleischBestellungenSet.remove(fb);
+				fleischBestellungenSet.add(fb);
+			}
 		}
 
 		@Override
@@ -436,33 +460,64 @@ public class FleischActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.fleischSaveBtn:
-			fleischBestellungenList = new ArrayList<FleischBestellungModel>(
-					fleischBestellungenSet);
-			FleischBestellungenXmlWriter fbw = new FleischBestellungenXmlWriter();
-			try {
-				fbw.writeFleischBestellungenXml(fleischBestellungenList,
-						nettoUmsatzsumme, nettoEinkaufssumme, bestellungsdatum,
-						daysFrom1970);
-			} catch (TransformerFactoryConfigurationError e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (TransformerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		case R.id.fleischSaveBtn: {
+			if (datumFleischBestellungView.getText().equals("")) {
+				Toast.makeText(this, "Bitte Datum auswählen", Toast.LENGTH_LONG)
+						.show();
+			} else {
+				bestellungsdatum = datumFleischBestellungView.getText()
+						.toString();
+				SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 
-			} catch (ParserConfigurationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SAXException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Date d = null;
+				try {
+					d = format.parse(bestellungsdatum);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(d);
+				daysFrom1970 = (int) (calendar.getTimeInMillis() / (1000 * 3600 * 24));
+
+				fleischBestellungenList = new ArrayList<FleischBestellungModel>(
+						fleischBestellungenSet);
+				FleischBestellungenXmlWriter fbw = new FleischBestellungenXmlWriter();
+				try {
+					fbw.writeFleischBestellungenXml(fleischBestellungenList,
+							nettoUmsatzsumme, nettoEinkaufssumme,
+							bestellungsdatum, daysFrom1970);
+				} catch (TransformerFactoryConfigurationError e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (TransformerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+
+				} catch (ParserConfigurationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SAXException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Intent intent = new Intent(this,
+						FleischBestellungenActivity.class);
+				startActivity(intent);
 			}
-			Intent intent = new Intent(this, FleischBestellungenActivity.class);
-			startActivity(intent);
+			break;
+		}
+		case R.id.datumBtn: {
+			DialogFragment newFragment = new DatePickerFragment(
+					datumFleischBestellungView);
+			newFragment.show(getSupportFragmentManager(), "datePicker");
+			break;
+		}
+		default:
+			break;
 		}
 	}
 

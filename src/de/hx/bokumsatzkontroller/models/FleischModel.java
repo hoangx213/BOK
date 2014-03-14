@@ -1,4 +1,4 @@
-package de.hx.bokumsatzkontroller;
+package de.hx.bokumsatzkontroller.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -22,7 +22,7 @@
         android:textSize="20pt" />
 
     <TextView
-        android:id="@+id/fleischBestellungenDayText"
+        android:id="@+id/vonDatumFBTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

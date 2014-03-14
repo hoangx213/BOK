@@ -1,4 +1,4 @@
-package de.hx.bokumsatzkontroller;
+package de.hx.bokumsatzkontroller.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
+
+import de.hx.bokumsatzkontroller.models.FleischModel;
 
 import android.content.Context;
 import android.os.Environment;

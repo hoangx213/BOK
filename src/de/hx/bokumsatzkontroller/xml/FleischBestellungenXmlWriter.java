@@ -1,8 +1,10 @@
-package de.hx.bokumsatzkontroller;
+package de.hx.bokumsatzkontroller.xml;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,8 +18,13 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import de.hx.bokumsatzkontroller.models.FleischBestellungModel;
 
 import android.os.Environment;
 
@@ -28,43 +35,55 @@ public class FleischBestellungenXmlWriter {
 
 	public void writeFleischBestellungenXml(
 			ArrayList<FleischBestellungModel> fbList, double nettoUmsatzsumme,
-			double einkaufssumme, String bestellungsdatum, int daysFrom1970) throws ParserConfigurationException, SAXException, IOException, TransformerFactoryConfigurationError, TransformerException {
-		
+			double einkaufssumme, String bestellungsdatum, int daysFrom1970)
+			throws ParserConfigurationException, SAXException, IOException,
+			TransformerFactoryConfigurationError, TransformerException {
+
+//		deleteExistedBestellungTag(daysFrom1970);
+
 		File xmlFile = new File(Environment.getExternalStorageDirectory()
 				+ "/BOK", "fleisch_bestellungen.xml");
-		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory docFactory = DocumentBuilderFactory
+				.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 		Document doc = docBuilder.parse(xmlFile);
-		
+
 		Node fbNode = doc.getFirstChild();
 		Node thisBestellung = doc.createElement("bestellung");
 		fbNode.appendChild(thisBestellung);
+		
+		Node bestellungID = doc.createElement("bestellungID");
+		bestellungID.setTextContent(UUID.randomUUID().toString());
+		thisBestellung.appendChild(bestellungID);
+		
 		Node nettoUmsatzsummeNode = doc.createElement("nettoUmsatzsumme");
 		nettoUmsatzsummeNode.setTextContent(String.valueOf(nettoUmsatzsumme));
 		thisBestellung.appendChild(nettoUmsatzsummeNode);
-		
+
 		Node einkaufssummeNode = doc.createElement("einkaufssumme");
 		einkaufssummeNode.setTextContent(String.valueOf(einkaufssumme));
 		thisBestellung.appendChild(einkaufssummeNode);
-		
+
 		Node datumNode = doc.createElement("datum");
 		datumNode.setTextContent(String.valueOf(bestellungsdatum));
 		thisBestellung.appendChild(datumNode);
-		
+
 		Node daysFrom1970Node = doc.createElement("daysFrom1970");
 		daysFrom1970Node.setTextContent(String.valueOf(daysFrom1970));
 		thisBestellung.appendChild(daysFrom1970Node);
-		
-		for(FleischBestellungModel i : fbList){
+
+		for (FleischBestellungModel i : fbList) {
 			Node itemNode = doc.createElement("item");
 			Node artikelNameNode = doc.createElement("artikelName");
-			artikelNameNode.setTextContent(i.getFleischModel().getArtikelName());
+			artikelNameNode
+					.setTextContent(i.getFleischModel().getArtikelName());
 			itemNode.appendChild(artikelNameNode);
 			Node proBestellung = doc.createElement("proBestellung");
 			proBestellung.setTextContent(String.valueOf(i.getProBestellung()));
 			itemNode.appendChild(proBestellung);
 			Node bestellungenNode = doc.createElement("bestellungen");
-			bestellungenNode.setTextContent(String.valueOf(i.getBestellungen()));
+			bestellungenNode
+					.setTextContent(String.valueOf(i.getBestellungen()));
 			itemNode.appendChild(bestellungenNode);
 			Node totalNode = doc.createElement("total");
 			totalNode.setTextContent(String.valueOf(i.getTotal()));
@@ -92,14 +111,41 @@ public class FleischBestellungenXmlWriter {
 			itemNode.appendChild(wareneinsatz);
 			thisBestellung.appendChild(itemNode);
 		}
-		
-		
-		Transformer transformer = TransformerFactory.newInstance().newTransformer();
+
+		Transformer transformer = TransformerFactory.newInstance()
+				.newTransformer();
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
 		StreamResult result = new StreamResult(xmlFile);
 		DOMSource source = new DOMSource(doc);
 		transformer.transform(source, result);
+	}
+
+	void deleteExistedBestellungTag(int daysFrom1970)
+			throws ParserConfigurationException, SAXException, IOException {
+		File xmlFile = new File(Environment.getExternalStorageDirectory()
+				+ "/BOK/fleisch_bestellungen.xml");
+		if (xmlFile.exists()) {
+
+			FileInputStream fis = new FileInputStream(xmlFile);
+			DocumentBuilderFactory dFactory = null;
+			DocumentBuilder builder = null;
+			Document ret = null;
+			dFactory = DocumentBuilderFactory.newInstance();
+			builder = dFactory.newDocumentBuilder();
+			ret = builder.parse(new InputSource(fis));
+			NodeList nodes = ret.getElementsByTagName("bestellung");
+			for (int i = 0; i < nodes.getLength(); i++) {
+				Element thisBestellung = (Element) nodes.item(i);
+				Element thisDaysFrom1970Element = (Element) thisBestellung
+						.getElementsByTagName("daysFrom1970").item(0);
+				int thisDaysFrom1970 = Integer.valueOf(thisDaysFrom1970Element
+						.getTextContent());
+				if (thisDaysFrom1970 == daysFrom1970) {
+					thisBestellung.getParentNode().removeChild(thisBestellung);
+				}
+			}
+		}
 	}
 
 }

@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="40dp" >
+        android:padding="0dp" >
 
         <Button
             android:id="@+id/einkaufsberichtBtn"
@@ -34,51 +34,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="20dp" >
+        android:padding="0dp" >
+
+        <Button
+            android:id="@+id/vonDatumFBBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Von" />
 
         <TextView
-            android:id="@+id/fleischBestellungenDayText"
+            android:id="@+id/vonDatumFBTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Von"
+            android:layout_weight="2"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <EditText
-            android:id="@+id/vonDatumEditText"
+        <Button
+            android:id="@+id/bisDatumFBBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ems="10"
-            android:inputType="date" >
-
-            <requestFocus />
-        </EditText>
-
+            android:text="Bis" />
+        
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/bisDatumFBTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Bis"
+            android:layout_weight="2"
             android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <EditText
-            android:id="@+id/bisDatumEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="date" />
+        
     </LinearLayout>
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="30dp"
         android:paddingLeft="30dp"
-        android:text="FLEISCHBESTELLUNGEN TAGE"
+        android:paddingTop="0dp"
+        android:text="FLEISCHBESTELLUNGEN"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold" />
 
