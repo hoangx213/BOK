@@ -1,200 +1,48 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+    <LinearLayout
+        android:id="@+id/datumFleischBestellung"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:background="@color/LightYellow">
 
-        <LinearLayout
-            android:id="@+id/datumFleischBestellung"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/datumText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Datum:  "
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <TextView
-                android:id="@+id/datumFleischBestellungTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <Button
-                android:id="@+id/datumBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Datum auswählen" />
-        </LinearLayout>
-
-        <HorizontalScrollView
-            android:id="@+id/scrollView1"
+        <TextView
+            android:id="@+id/datumText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/datumFleischBestellung"
-            android:scrollbars="vertical|horizontal" >
+            android:text="Datum:  "
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <TableLayout
-                android:id="@+id/TableLayout1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/AntiqueWhite"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:stretchColumns="*" >
-
-                <TableRow
-                    android:id="@+id/tableRow1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dip"
-                    android:background="@color/Brown" >
-
-                    <TextView
-                        android:id="@+id/TextView01"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="Artikelname"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="pro Bes."
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="Bes."
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="Total"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/bisDatumFBTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="Einkaufspr."
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/TextView02"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="Net.Einkauf"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textView7"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="Brut.Einkauf"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/vonDatumFBTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="Verkaufspr"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textView14"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="Net.Umsatz"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/TextView04"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="Brut.Umsatz"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="Wareneinsatz"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/TextView03"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dip"
-                        android:background="@color/White"
-                        android:text="Anteil"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold" />
-                </TableRow>
-            </TableLayout>
-        </HorizontalScrollView>
+        <TextView
+            android:id="@+id/datumFleischBestellungTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <Button
-            android:id="@+id/fleischSaveBtn"
+            android:id="@+id/datumBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/bestellungssumme"
-            android:text="Speichern" />
+            android:text="Datum auswählen" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:background="@color/LightYellow" >
 
         <TableLayout
             android:id="@+id/bestellungssumme"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/scrollView1" >
+            android:layout_height="wrap_content">
 
             <TableRow
                 android:layout_width="wrap_content"
@@ -220,7 +68,6 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
             </TableRow>
 
             <TableRow
@@ -249,6 +96,161 @@
                     android:textStyle="bold" />
             </TableRow>
         </TableLayout>
-    </RelativeLayout>
 
-</ScrollView>
+        <Button
+            android:id="@+id/fleischSaveBtn"
+            android:layout_width="match_parent"
+            android:layout_height="30pt"
+            android:layout_gravity="right"
+            android:text="Speichern" />
+    </LinearLayout>
+
+    <de.hx.bokumsatzkontroller.widgets.TwoDScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_below="@+id/datumFleischBestellung" >
+
+        <TableLayout
+            android:id="@+id/TableLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/OrangePutty"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:stretchColumns="*" >
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dip"
+                android:background="@color/Brown" >
+
+                <TextView
+                    android:id="@+id/TextView01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dip"
+                    android:background="@color/White"
+                    android:text="Artikelname"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dip"
+                    android:background="@color/White"
+                    android:text="pro Bes."
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dip"
+                    android:background="@color/White"
+                    android:text="Bes."
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dip"
+                    android:background="@color/White"
+                    android:text="Total"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/bisDatumFBTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dip"
+                    android:background="@color/White"
+                    android:text="Einkaufspr."
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/TextView02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dip"
+                    android:background="@color/White"
+                    android:text="Net.Einkauf"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dip"
+                    android:background="@color/White"
+                    android:text="Brut.Einkauf"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/vonDatumFBTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dip"
+                    android:background="@color/White"
+                    android:text="Verkaufspr"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dip"
+                    android:background="@color/White"
+                    android:text="Net.Umsatz"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/TextView04"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dip"
+                    android:background="@color/White"
+                    android:text="Anteil"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dip"
+                    android:background="@color/White"
+                    android:text="Brut.Umsatz"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/TextView03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dip"
+                    android:background="@color/White"
+                    android:text="Wareneinsatz"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold" />
+            </TableRow>
+        </TableLayout>
+    </de.hx.bokumsatzkontroller.widgets.TwoDScrollView>
+
+</RelativeLayout>

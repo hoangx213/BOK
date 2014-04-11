@@ -2,9 +2,8 @@ package de.hx.bokumsatzkontroller.models;
 
 public class ArtikelBerichtModel {
 	String artikelName;
-	int total;
-	double nettoEinkauf, bruttoEinkauf, nettoUmsatz, bruttoUmsatz;
-	public ArtikelBerichtModel(String artikelName, int total,
+	double total, nettoEinkauf, bruttoEinkauf, nettoUmsatz, bruttoUmsatz;
+	public ArtikelBerichtModel(String artikelName, double total,
 			double nettoEinkauf, double bruttoEinkauf, double nettoUmsatz,
 			double bruttoUmsatz) {
 		super();
@@ -15,7 +14,7 @@ public class ArtikelBerichtModel {
 		this.nettoUmsatz = nettoUmsatz;
 		this.bruttoUmsatz = bruttoUmsatz;
 	}
-	public void addTotal(int total){
+	public void addTotal(double total){
 		this.total += total;
 	}
 	public void addNettoEinkauf(double nettoEinkauf){
@@ -37,10 +36,10 @@ public class ArtikelBerichtModel {
 	public void setArtikelName(String artikelName) {
 		this.artikelName = artikelName;
 	}
-	public int getTotal() {
+	public double getTotal() {
 		return total;
 	}
-	public void setTotal(int total) {
+	public void setTotal(double total) {
 		this.total = total;
 	}
 	public double getNettoEinkauf() {

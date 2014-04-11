@@ -86,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="2dip"
                         android:background="@color/White"
-                        android:text="Brut.Umsatz"
+                        android:text="Anteil"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textStyle="bold" />
 
@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="2dip"
                         android:background="@color/White"
-                        android:text="Wareneinsatz"
+                        android:text="Brut.Umsatz"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textStyle="bold" />
 
@@ -106,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="2dip"
                         android:background="@color/White"
-                        android:text="Anteil"
+                        android:text="Wareneinsatz"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textStyle="bold" />
                 </TableRow>

@@ -31,10 +31,12 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/zwischenBerichtDatePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="0dp" >
+        android:padding="0dp" 
+        android:visibility="gone">
 
         <Button
             android:id="@+id/vonDatumFBBtn"
@@ -47,7 +49,7 @@
             android:id="@+id/vonDatumFBTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <Button
@@ -61,8 +63,46 @@
             android:id="@+id/bisDatumFBTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+        <Button android:id="@+id/zwischenBerichtOKBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceLarge" 
+            android:text="OK"/>
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/einkaufBerichtDatePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="0dp" 
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/monatEBBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Monat" />
+
+        <TextView
+            android:id="@+id/monatEBTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+        <Button android:id="@+id/einkaufBerichtOKBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceLarge" 
+            android:text="OK"/>
         
     </LinearLayout>
 

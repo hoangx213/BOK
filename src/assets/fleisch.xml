@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fleisch>
     <item>
-        <artikelName>Ente</artikelName>
-        <einheit>St.</einheit>
-        <einheitProBestellung>10</einheitProBestellung>
-        <schwund>0</schwund>
-        <verkaufsfaktor>3.6</verkaufsfaktor>
-        <bruttoPreis>11</bruttoPreis>
-        <nettoPreis>9.68</nettoPreis>
-        <einkaufspreis>7.98</einkaufspreis>
-    </item>
-    <item>
         <artikelName>Hähnchenbrust</artikelName>
         <einheit>kg</einheit>
         <einheitProBestellung>12</einheitProBestellung>
@@ -19,6 +9,7 @@
         <bruttoPreis>6.70</bruttoPreis>
         <nettoPreis>5.90</nettoPreis>
         <einkaufspreis>3.79</einkaufspreis>
+        <order>0</order>
     </item>
     <item>
         <artikelName>Seelachsfilet</artikelName>
@@ -29,6 +20,7 @@
         <bruttoPreis>6.20</bruttoPreis>
         <nettoPreis>5.46</nettoPreis>
         <einkaufspreis>4.99</einkaufspreis>
+        <order>1</order>
     </item>
     <item>
         <artikelName>Rindoberschale</artikelName>
@@ -39,6 +31,7 @@
         <bruttoPreis>6.70</bruttoPreis>
         <nettoPreis>5.90</nettoPreis>
         <einkaufspreis>6.80</einkaufspreis>
+        <order>2</order>
     </item>
     <item>
         <artikelName>Hähnchenkeule</artikelName>
@@ -49,6 +42,7 @@
         <bruttoPreis>7.2</bruttoPreis>
         <nettoPreis>6.34</nettoPreis>
         <einkaufspreis>3.09</einkaufspreis>
+        <order>3</order>
     </item>
     <item>
         <artikelName>Lamm</artikelName>
@@ -59,6 +53,7 @@
         <bruttoPreis>6.90</bruttoPreis>
         <nettoPreis>6.07</nettoPreis>
         <einkaufspreis>8.50</einkaufspreis>
+        <order>4</order>
     </item>
     <item>
         <artikelName>Garnelen</artikelName>
@@ -69,6 +64,7 @@
         <bruttoPreis>6.90</bruttoPreis>
         <nettoPreis>6.07</nettoPreis>
         <einkaufspreis>8.50</einkaufspreis>
+        <order>5</order>
     </item>
     <item>
         <artikelName>Entebrustfilet</artikelName>
@@ -79,5 +75,94 @@
         <bruttoPreis>12.5</bruttoPreis>
         <nettoPreis>11.00</nettoPreis>
         <einkaufspreis>9.90</einkaufspreis>
+        <order>6</order>
+    </item>
+    <item>
+        <artikelName>Thunfisch</artikelName>
+        <einheit>kg</einheit>
+        <einheitProBestellung>1</einheitProBestellung>
+        <schwund>0.05</schwund>
+        <verkaufsfaktor>20.00</verkaufsfaktor>
+        <bruttoPreis>7.00</bruttoPreis>
+        <nettoPreis>6.16</nettoPreis>
+        <einkaufspreis>23.45</einkaufspreis>
+        <order>7</order>
+    </item>
+    <item>
+        <artikelName>Lachs</artikelName>
+        <einheit>kg</einheit>
+        <einheitProBestellung>1</einheitProBestellung>
+        <schwund>0.15</schwund>
+        <verkaufsfaktor>20.00</verkaufsfaktor>
+        <bruttoPreis>5.50</bruttoPreis>
+        <nettoPreis>4.84</nettoPreis>
+        <einkaufspreis>8.9</einkaufspreis>
+        <order>8</order>
+    </item>
+    <item>
+        <artikelName>Surimi</artikelName>
+        <einheit>kg</einheit>
+        <einheitProBestellung>1</einheitProBestellung>
+        <schwund>0</schwund>
+        <verkaufsfaktor>33.00</verkaufsfaktor>
+        <bruttoPreis>3.00</bruttoPreis>
+        <nettoPreis>2.64</nettoPreis>
+        <einkaufspreis>4.80</einkaufspreis>
+        <order>9</order>
+    </item>
+    <item>
+        <artikelName>Sepia</artikelName>
+        <einheit>kg</einheit>
+        <einheitProBestellung>1</einheitProBestellung>
+        <schwund>0.15</schwund>
+        <verkaufsfaktor>30.00</verkaufsfaktor>
+        <bruttoPreis>0.80</bruttoPreis>
+        <nettoPreis>0.70</nettoPreis>
+        <einkaufspreis>15.80</einkaufspreis>
+        <order>10</order>
+    </item>
+    <item>
+        <artikelName>Ente</artikelName>
+        <einheit>St.</einheit>
+        <einheitProBestellung>10</einheitProBestellung>
+        <schwund>0</schwund>
+        <verkaufsfaktor>3.6</verkaufsfaktor>
+        <bruttoPreis>11</bruttoPreis>
+        <nettoPreis>9.68</nettoPreis>
+        <einkaufspreis>7.98</einkaufspreis>
+        <order>11</order>
+    </item>
+    <item>
+        <artikelName>Weißfisch</artikelName>
+        <einheit>St.</einheit>
+        <einheitProBestellung>0.16</einheitProBestellung>
+        <schwund>0.02</schwund>
+        <verkaufsfaktor>20.00</verkaufsfaktor>
+        <bruttoPreis>0.80</bruttoPreis>
+        <nettoPreis>0.70</nettoPreis>
+        <einkaufspreis>4.80</einkaufspreis>
+        <order>12</order>
+    </item>
+    <item>
+        <artikelName>Krabben</artikelName>
+        <einheit>St.</einheit>
+        <einheitProBestellung>0.18</einheitProBestellung>
+        <schwund>0</schwund>
+        <verkaufsfaktor>30.00</verkaufsfaktor>
+        <bruttoPreis>0.80</bruttoPreis>
+        <nettoPreis>0.70</nettoPreis>
+        <einkaufspreis>4.85</einkaufspreis>
+        <order>13</order>
+    </item>
+    <item>
+        <artikelName>Octopus</artikelName>
+        <einheit>St.</einheit>
+        <einheitProBestellung>0.16</einheitProBestellung>
+        <schwund>0</schwund>
+        <verkaufsfaktor>20.00</verkaufsfaktor>
+        <bruttoPreis>0.80</bruttoPreis>
+        <nettoPreis>0.70</nettoPreis>
+        <einkaufspreis>5.85</einkaufspreis>
+        <order>14</order>
     </item>
 </fleisch>

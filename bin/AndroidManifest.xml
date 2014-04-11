@@ -7,7 +7,8 @@
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="18" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,16 +17,54 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="de.hx.bokumsatzkontroller.FleischActivity"></activity>
-        <activity android:name="FleischBestellungenActivity"></activity>
-        <activity android:name="FleischBestellungNachschauActivity"></activity>
-        <activity android:name="FleischZwischenBerichtActivity"></activity>
+        <activity
+            android:name="de.hx.bokumsatzkontroller.fleischActivity.FleischActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.hx.bokumsatzkontroller.fleischActivity.FleischBestellungenActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.hx.bokumsatzkontroller.fleischActivity.FleischBestellungNachschauActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.hx.bokumsatzkontroller.fleischActivity.FleischZwischenBerichtActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.hx.bokumsatzkontroller.fleischActivity.FleischEinkaufBerichtActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.hx.bokumsatzkontroller.getraenkeActivity.GetraenkeActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.hx.bokumsatzkontroller.getraenkeActivity.GetraenkeBestellungenActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.hx.bokumsatzkontroller.getraenkeActivity.GetraenkeBestellungNachschauActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.hx.bokumsatzkontroller.getraenkeActivity.GetraenkeZwischenBerichtActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.hx.bokumsatzkontroller.getraenkeActivity.GetraenkeEinkaufBerichtActivity"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

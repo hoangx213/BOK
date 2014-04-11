@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import de.hx.bokumsatzkontroller.fleischActivity.FleischBestellungenActivity;
+import de.hx.bokumsatzkontroller.getraenkeActivity.GetraenkeBestellungenActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -18,7 +21,7 @@ import android.widget.Button;
 
 public class MainActivity extends Activity implements OnClickListener {
 
-	Button fleischBtn;
+	Button fleischBtn, getraenkeBtn;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -28,8 +31,14 @@ public class MainActivity extends Activity implements OnClickListener {
 		// isExternalStorageWritable();
 		copyFileToExternalStorage("fleisch.xml");
 		copyFileToExternalStorage("fleisch_bestellungen.xml");
+		copyFileToExternalStorage("fleisch_einkauf_sammlung.xml");
+		copyFileToExternalStorage("getraenke.xml");
+		copyFileToExternalStorage("getraenke_bestellungen.xml");
+		copyFileToExternalStorage("getraenke_einkauf_sammlung.xml");
 		fleischBtn = (Button) findViewById(R.id.fleischBtn);
+		getraenkeBtn = (Button) findViewById(R.id.getraenkeBtn);
 		fleischBtn.setOnClickListener(this);
+		getraenkeBtn.setOnClickListener(this);
 	}
 
 	public void copyFileToExternalStorage(String filename) {
@@ -74,10 +83,16 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		Intent intent;
 		switch (v.getId()) {
 		case R.id.fleischBtn:
-			Intent intent = new Intent(MainActivity.this, FleischBestellungenActivity.class);
+			intent = new Intent(MainActivity.this, FleischBestellungenActivity.class);
 			startActivity(intent);
+			break;
+		case R.id.getraenkeBtn:
+			intent = new Intent(MainActivity.this, GetraenkeBestellungenActivity.class);
+			startActivity(intent);
+			break;
 		}
 
 	}
