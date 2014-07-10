@@ -20,7 +20,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import de.hx.bokumsatzkontroller.R;
-import de.hx.bokumsatzkontroller.getraenkeActivity.GetraenkeBestellungenActivity;
 import de.hx.bokumsatzkontroller.models.getraenke.GetraenkeBestellungModel;
 import de.hx.bokumsatzkontroller.models.getraenke.OneDayGetraenkeBestellungenModel;
 import de.hx.bokumsatzkontroller.util.Utils;
@@ -33,7 +32,7 @@ public class GetraenkeBestellungNachschauActivity extends Activity {
 	TextView nettoEinkaufssummeView;
 	OneDayGetraenkeBestellungenModel thisDayBestellungen;
 	DecimalFormat df = new DecimalFormat("#.##");
-	DecimalFormat prozentZahl = new DecimalFormat("#");
+	DecimalFormat prozentZahl = new DecimalFormat("#.#");
 	Utils utils = new Utils();
 
 	/** Called when the activity is first created. */
@@ -70,7 +69,7 @@ public class GetraenkeBestellungNachschauActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
-		startActivity(new Intent(this, GetraenkeBestellungenActivity.class));
+		finish();
 		return true;
 	}
 

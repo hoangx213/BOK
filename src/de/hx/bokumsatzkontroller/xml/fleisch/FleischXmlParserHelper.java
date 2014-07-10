@@ -81,11 +81,14 @@ public class FleischXmlParserHelper {
 	OneDayFleischBestellungenModel getOneDayFBFromXMLDOMElement(Element element) {
 		String datum;
 		int daysFrom1970;
-		double nettoUmsatzsumme, einkaufssumme;
+		double portionSumme, nettoUmsatzsumme, einkaufssumme;
 		ArrayList<FleischBestellungModel> fbList = new ArrayList<FleischBestellungModel>();
 		datum = element.getElementsByTagName("datum").item(0).getTextContent();
 		daysFrom1970 = Integer.valueOf(element
 				.getElementsByTagName("daysFrom1970").item(0).getTextContent());
+		portionSumme = Double.valueOf(element
+				.getElementsByTagName("portionSumme").item(0)
+				.getTextContent());
 		nettoUmsatzsumme = Double.valueOf(element
 				.getElementsByTagName("nettoUmsatzsumme").item(0)
 				.getTextContent());
@@ -101,10 +104,14 @@ public class FleischXmlParserHelper {
 			FleischModel fleischModel;
 			String proBestellung;
 			int bestellungen;
-			double total, einkaufspreis, nettoEinkauf, bruttoEinkauf, verkaufspreis, nettoUmsatz, bruttoUmsatz, wareneinsatz;
+			double total, portion, einkaufspreis, nettoEinkauf, bruttoEinkauf, verkaufspreis, nettoUmsatz, bruttoUmsatz, wareneinsatz;
 			fleischModel = new FleischModel(thisFleischBestellungElem
 					.getElementsByTagName("artikelName").item(0)
-					.getTextContent());
+					.getTextContent(), thisFleischBestellungElem
+					.getElementsByTagName("kategorie").item(0)
+					.getTextContent(), Integer.valueOf(thisFleischBestellungElem
+					.getElementsByTagName("order").item(0)
+					.getTextContent()));
 			proBestellung = thisFleischBestellungElem
 					.getElementsByTagName("proBestellung").item(0)
 					.getTextContent();
@@ -113,6 +120,8 @@ public class FleischXmlParserHelper {
 					.getTextContent());
 			total = Double.valueOf(thisFleischBestellungElem
 					.getElementsByTagName("total").item(0).getTextContent());
+			portion = Double.valueOf(thisFleischBestellungElem
+					.getElementsByTagName("portion").item(0).getTextContent());
 			einkaufspreis = Double.valueOf(thisFleischBestellungElem
 					.getElementsByTagName("einkaufspreis").item(0)
 					.getTextContent());
@@ -135,12 +144,12 @@ public class FleischXmlParserHelper {
 					.getElementsByTagName("wareneinsatz").item(0)
 					.getTextContent());
 			thisFleischBestellung = new FleischBestellungModel(fleischModel,
-					proBestellung, bestellungen, total, einkaufspreis,
+					proBestellung, bestellungen, total, portion, einkaufspreis,
 					nettoEinkauf, bruttoEinkauf, verkaufspreis, nettoUmsatz,
 					bruttoUmsatz, wareneinsatz);
 			fbList.add(thisFleischBestellung);
 		}
-		return new OneDayFleischBestellungenModel(datum, daysFrom1970, fbList,
+		return new OneDayFleischBestellungenModel(datum, daysFrom1970, fbList, portionSumme,
 				nettoUmsatzsumme, einkaufssumme);
 	}
 

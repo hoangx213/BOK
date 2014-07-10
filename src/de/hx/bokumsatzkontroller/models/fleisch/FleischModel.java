@@ -7,17 +7,25 @@ public class FleischModel implements Parcelable{
 
 	String artikelName, einheit;
 	double einheitProBestellung, schwund, verkaufsfaktor, bruttoPreis,
-			nettoPreis, einkaufspreis;
+			nettoPreis, einkaufspreis, festAnteil;
 	double nettoUmsatzProKarton, bruttoUmsatzProKarton, nettoUmsatzProEinheit;
+	String kategorie;
 	int order;
 
-	public FleischModel(String artikelName){
+	public FleischModel(String artikelName, String kategorie, int order){
 		this.artikelName = artikelName;
+		this.kategorie = kategorie;
+		this.order = order;
 	}
 	
+	public FleischModel(String artikelName) {
+		super();
+		this.artikelName = artikelName;
+	}
+
 	public FleischModel(String artikelName, String einheit,
 			double einheitProBestellung, double schwund, double verkaufsfaktor,
-			double bruttoPreis, double nettoPreis, double einkaufspreis, int order) {
+			double bruttoPreis, double nettoPreis, double einkaufspreis, double festAnteil, String kategorie, int order) {
 		this.artikelName = artikelName;
 		this.einheit = einheit;
 		this.einheitProBestellung = einheitProBestellung;
@@ -26,11 +34,30 @@ public class FleischModel implements Parcelable{
 		this.bruttoPreis = bruttoPreis;
 		this.nettoPreis = nettoPreis;
 		this.einkaufspreis = einkaufspreis;
+		this.festAnteil = festAnteil;
+		this.kategorie = kategorie;
 		this.order = order;
 		
 		this.nettoUmsatzProKarton = (this.einheitProBestellung - this.einheitProBestellung * this.schwund) * this.verkaufsfaktor * this.nettoPreis;
 		this.bruttoUmsatzProKarton = this.nettoUmsatzProEinheit * 0.12;
 		this.nettoUmsatzProEinheit = this.nettoUmsatzProKarton / this.einheitProBestellung;
+	}
+
+	
+	public double getFestAnteil() {
+		return festAnteil;
+	}
+
+	public void setFestAnteil(double festAnteil) {
+		this.festAnteil = festAnteil;
+	}
+
+	public String getKategorie() {
+		return kategorie;
+	}
+
+	public void setKategorie(String kategorie) {
+		this.kategorie = kategorie;
 	}
 
 	public String getArtikelName() {

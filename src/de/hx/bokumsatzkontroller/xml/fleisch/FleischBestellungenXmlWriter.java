@@ -34,9 +34,9 @@ public class FleischBestellungenXmlWriter {
 	};
 
 	public void writeFleischBestellungenXml(
-			ArrayList<FleischBestellungModel> fbList, double nettoUmsatzsumme,
-			double einkaufssumme, String bestellungsdatum, int daysFrom1970)
-			throws ParserConfigurationException, SAXException, IOException,
+			ArrayList<FleischBestellungModel> fbList, String bestellungID, double portionSumme, 
+			double nettoUmsatzsumme, double einkaufssumme, String bestellungsdatum, 
+			int daysFrom1970) throws ParserConfigurationException, SAXException, IOException,
 			TransformerFactoryConfigurationError, TransformerException {
 
 //		deleteExistedBestellungTag(daysFrom1970);
@@ -52,9 +52,13 @@ public class FleischBestellungenXmlWriter {
 		Node thisBestellung = doc.createElement("bestellung");
 		fbNode.appendChild(thisBestellung);
 		
-		Node bestellungID = doc.createElement("bestellungID");
-		bestellungID.setTextContent(UUID.randomUUID().toString());
-		thisBestellung.appendChild(bestellungID);
+		Node bestellungIDNode = doc.createElement("bestellungID");
+		bestellungIDNode.setTextContent(bestellungID);
+		thisBestellung.appendChild(bestellungIDNode);
+		
+		Node portionSummeNode = doc.createElement("portionSumme");
+		portionSummeNode.setTextContent(String.valueOf(portionSumme));
+		thisBestellung.appendChild(portionSummeNode);
 		
 		Node nettoUmsatzsummeNode = doc.createElement("nettoUmsatzsumme");
 		nettoUmsatzsummeNode.setTextContent(String.valueOf(nettoUmsatzsumme));
@@ -78,6 +82,12 @@ public class FleischBestellungenXmlWriter {
 			artikelNameNode
 					.setTextContent(i.getFleischModel().getArtikelName());
 			itemNode.appendChild(artikelNameNode);
+			Node kategorieNode = doc.createElement("kategorie");
+			kategorieNode.setTextContent(i.getFleischModel().getKategorie());
+			itemNode.appendChild(kategorieNode);
+			Node orderNode = doc.createElement("order");
+			orderNode.setTextContent(String.valueOf(i.getFleischModel().getOrder()));
+			itemNode.appendChild(orderNode);
 			Node proBestellung = doc.createElement("proBestellung");
 			proBestellung.setTextContent(String.valueOf(i.getProBestellung()));
 			itemNode.appendChild(proBestellung);
@@ -88,6 +98,9 @@ public class FleischBestellungenXmlWriter {
 			Node totalNode = doc.createElement("total");
 			totalNode.setTextContent(String.valueOf(i.getTotal()));
 			itemNode.appendChild(totalNode);
+			Node portionNode = doc.createElement("portion");
+			portionNode.setTextContent(String.valueOf(i.getPortion()));
+			itemNode.appendChild(portionNode);
 			Node einkaufspreis = doc.createElement("einkaufspreis");
 			einkaufspreis.setTextContent(String.valueOf(i.getEinkaufspreis()));
 			itemNode.appendChild(einkaufspreis);

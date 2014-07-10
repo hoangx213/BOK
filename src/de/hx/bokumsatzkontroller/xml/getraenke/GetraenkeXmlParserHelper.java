@@ -81,11 +81,14 @@ public class GetraenkeXmlParserHelper {
 	OneDayGetraenkeBestellungenModel getOneDayGBFromXMLDOMElement(Element element) {
 		String datum;
 		int daysFrom1970;
-		double nettoUmsatzsumme, einkaufssumme;
+		double portionSumme, nettoUmsatzsumme, einkaufssumme;
 		ArrayList<GetraenkeBestellungModel> fbList = new ArrayList<GetraenkeBestellungModel>();
 		datum = element.getElementsByTagName("datum").item(0).getTextContent();
 		daysFrom1970 = Integer.valueOf(element
 				.getElementsByTagName("daysFrom1970").item(0).getTextContent());
+		portionSumme = Double.valueOf(element
+				.getElementsByTagName("portionSumme").item(0)
+				.getTextContent());
 		nettoUmsatzsumme = Double.valueOf(element
 				.getElementsByTagName("nettoUmsatzsumme").item(0)
 				.getTextContent());
@@ -100,19 +103,25 @@ public class GetraenkeXmlParserHelper {
 					.item(i);
 			GetraenkeModel getraenkeModel;
 			String proBestellung;
-			int bestellungen, total;
-			double einkaufspreis, nettoEinkauf, bruttoEinkauf, verkaufspreis, nettoUmsatz, bruttoUmsatz, wareneinsatz;
+			int bestellungen;
+			double total, portion, einkaufspreis, nettoEinkauf, bruttoEinkauf, verkaufspreis, nettoUmsatz, bruttoUmsatz, wareneinsatz;
 			getraenkeModel = new GetraenkeModel(thisGetraenkeBestellungElem
 					.getElementsByTagName("artikelName").item(0)
-					.getTextContent());
+					.getTextContent(), thisGetraenkeBestellungElem
+					.getElementsByTagName("kategorie").item(0)
+					.getTextContent(), Integer.valueOf(thisGetraenkeBestellungElem
+					.getElementsByTagName("order").item(0)
+					.getTextContent()));
 			proBestellung = thisGetraenkeBestellungElem
 					.getElementsByTagName("proBestellung").item(0)
 					.getTextContent();
 			bestellungen = Integer.valueOf(thisGetraenkeBestellungElem
 					.getElementsByTagName("bestellungen").item(0)
 					.getTextContent());
-			total = Integer.valueOf(thisGetraenkeBestellungElem
+			total = Double.valueOf(thisGetraenkeBestellungElem
 					.getElementsByTagName("total").item(0).getTextContent());
+			portion = Double.valueOf(thisGetraenkeBestellungElem
+					.getElementsByTagName("portion").item(0).getTextContent());
 			einkaufspreis = Double.valueOf(thisGetraenkeBestellungElem
 					.getElementsByTagName("einkaufspreis").item(0)
 					.getTextContent());
@@ -135,13 +144,13 @@ public class GetraenkeXmlParserHelper {
 					.getElementsByTagName("wareneinsatz").item(0)
 					.getTextContent());
 			thisGetraenkeBestellung = new GetraenkeBestellungModel(getraenkeModel,
-					proBestellung, bestellungen, total, einkaufspreis,
+					proBestellung, bestellungen, total, portion, einkaufspreis,
 					nettoEinkauf, bruttoEinkauf, verkaufspreis, nettoUmsatz,
 					bruttoUmsatz, wareneinsatz);
 			fbList.add(thisGetraenkeBestellung);
 		}
 		return new OneDayGetraenkeBestellungenModel(datum, daysFrom1970, fbList,
-				nettoUmsatzsumme, einkaufssumme);
+				portionSumme, nettoUmsatzsumme, einkaufssumme);
 	}
 
 	Document getXMLDocument() throws ParserConfigurationException, SAXException, IOException {

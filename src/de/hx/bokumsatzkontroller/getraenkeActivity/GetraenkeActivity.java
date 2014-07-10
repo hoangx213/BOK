@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -40,6 +41,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.hx.bokumsatzkontroller.R;
+import de.hx.bokumsatzkontroller.models.fleisch.OneDayFleischBestellungenModel;
 import de.hx.bokumsatzkontroller.models.getraenke.GetraenkeBestellungModel;
 import de.hx.bokumsatzkontroller.models.getraenke.GetraenkeModel;
 import de.hx.bokumsatzkontroller.util.DatePickerFragment;
@@ -56,6 +58,7 @@ public class GetraenkeActivity extends FragmentActivity implements
 	ArrayList<GetraenkeBestellungModel> getraenkeBestellungenList;
 	Map<String, Double> getraenkeEinkaufPreisMap;
 	HashSet<GetraenkeBestellungModel> getraenkeBestellungenSet;
+	HashSet<Integer> indexList;
 	GetraenkeModelXmlParser getraenkeXP;
 	TableLayout table;
 	TextView datumGetraenkeBestellungView;
@@ -72,10 +75,12 @@ public class GetraenkeActivity extends FragmentActivity implements
 	static final int EINKAUFSPREISID = 1234;
 	static final int VERKAUFSPREISID = 4321;
 	DecimalFormat df = new DecimalFormat("#.##");
-	DecimalFormat prozentZahl = new DecimalFormat("#");
+	DecimalFormat prozentZahl = new DecimalFormat("#.#");
 	Button getraenkeSaveBtn;
+	String bestellungID = "";
 	double nettoUmsatzsumme = 0;
 	double nettoEinkaufssumme = 0;
+	double portionSumme = 0;
 	int daysFrom1970;
 	String bestellungsdatum;
 	Utils utils = new Utils();
@@ -83,7 +88,6 @@ public class GetraenkeActivity extends FragmentActivity implements
 	int aktuelleFarbe = 0;
 	int farbe1 = R.color.White;
 	int farbe2 = R.color.LightCyan;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +106,7 @@ public class GetraenkeActivity extends FragmentActivity implements
 		getraenkeList = new ArrayList<GetraenkeModel>();
 		getraenkeBestellungenSet = new HashSet<GetraenkeBestellungModel>();
 		getraenkeEinkaufPreisMap = new HashMap<String, Double>();
+		indexList = new HashSet<Integer>();
 		getraenkeXP = new GetraenkeModelXmlParser(getApplicationContext());
 
 		try {
@@ -116,7 +121,7 @@ public class GetraenkeActivity extends FragmentActivity implements
 
 		for (GetraenkeModel i : getraenkeList) {
 			String thisKategorie = i.getKategorie();
-			if(!thisKategorie.equals(aktuelleKategorie)){
+			if (!thisKategorie.equals(aktuelleKategorie)) {
 				aktuelleKategorie = thisKategorie;
 				aktuelleFarbe = (aktuelleFarbe == farbe1 ? farbe2 : farbe1);
 			}
@@ -198,7 +203,7 @@ public class GetraenkeActivity extends FragmentActivity implements
 			nettoUmsatz.setBackgroundResource(aktuelleFarbe);
 			nettoUmsatz.setId(NETTOUMSATZID);
 			tr.addView(nettoUmsatz);
-			
+
 			TextView anteil = new TextView(this);
 			anteil.setTextAppearance(this, android.R.style.TextAppearance_Large);
 			anteil.setBackgroundResource(aktuelleFarbe);
@@ -244,7 +249,7 @@ public class GetraenkeActivity extends FragmentActivity implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
-		startActivity(new Intent(this, GetraenkeBestellungenActivity.class));
+		finish();
 		return true;
 	}
 
@@ -259,6 +264,7 @@ public class GetraenkeActivity extends FragmentActivity implements
 
 		EditText view;
 		int index;
+		int bestellungBefore;
 
 		public MyTextWatcher(EditText view, int index) {
 			this.view = view;
@@ -288,6 +294,11 @@ public class GetraenkeActivity extends FragmentActivity implements
 			// Khi Bestellung leer thi cac Felder khac ko can phai thay doi
 			if (!bestellungenView.getText().toString().equals("")
 					|| view.getId() == BESTELLUNGENID) {
+
+				if (view.getId() == BESTELLUNGENID
+						&& !bestellungenView.getText().toString().equals(""))
+					indexList.add(index);
+
 				TextView totalView = (TextView) tr.findViewById(TOTALID);
 				TextView nettoUmsatzView = (TextView) tr
 						.findViewById(NETTOUMSATZID);
@@ -304,13 +315,23 @@ public class GetraenkeActivity extends FragmentActivity implements
 
 				GetraenkeModel getraenke = getraenkeList.get(index);
 
-				int totalBestellung = (int) (bestellungen * getraenke
+				double totalBestellung = (bestellungen * getraenke
 						.getEinheitProBestellung());
 				totalView.setText(String.valueOf(totalBestellung));
 
-				double verkaufsmenge = totalBestellung - (totalBestellung * getraenke.getSchwund());
-				double nettoUmsatz = verkaufsmenge * verkaufspreis
-						/ getraenke.getEinheitProGlas();
+				double verkaufsmenge = totalBestellung
+						- (totalBestellung * getraenke.getSchwund());
+
+				double portion = (getraenke.getEinheitProGlas() > 0 ? verkaufsmenge
+						/ getraenke.getEinheitProGlas()
+						: 0);
+
+				double nettoUmsatz;
+				if (getraenke.getEinheitProGlas() == 0.0)
+					nettoUmsatz = 0.0;
+				else {
+					nettoUmsatz = portion * verkaufspreis;
+				}
 				nettoUmsatzView.setText(df.format(nettoUmsatz));
 
 				double nettoEinkauf = bestellungen * einkaufspreis;
@@ -328,7 +349,7 @@ public class GetraenkeActivity extends FragmentActivity implements
 				TableLayout tl = (TableLayout) tr.getParent();
 				nettoUmsatzsumme = 0;
 				nettoEinkaufssumme = 0;
-				for (int j = 0; j < tl.getChildCount() - 1; j++) {
+				for (int j : indexList) {
 					TableRow thisTr = (TableRow) tl.getChildAt(j + 1);
 					if (((TextView) thisTr.findViewById(NETTOUMSATZID))
 							.getText() != "") {
@@ -348,7 +369,7 @@ public class GetraenkeActivity extends FragmentActivity implements
 					}
 				}
 
-				for (int j = 0; j < tl.getChildCount() - 1; j++) {
+				for (int j : indexList) {
 					TableRow thisTr = (TableRow) tl.getChildAt(j + 1);
 					TextView thisAnteilView = (TextView) thisTr
 							.findViewById(ANTEILID);
@@ -358,12 +379,31 @@ public class GetraenkeActivity extends FragmentActivity implements
 								.valueOf(((String) ((TextView) thisTr
 										.findViewById(NETTOUMSATZID)).getText())
 										.replace(",", "."));
-						double thisAnteil = thisNettoUmsatz / nettoUmsatzsumme;
+
+						double thisAnteil;
+						if (thisNettoUmsatz == 0)
+							thisAnteil = 0.0;
+						else
+							thisAnteil = thisNettoUmsatz / nettoUmsatzsumme;
 						String gerundeteAnteil = prozentZahl
 								.format(thisAnteil * 100);
 						thisAnteilView.setText(gerundeteAnteil + "%");
 					}
 				}
+
+				if (this.bestellungBefore != 0) {
+					double totalBestellungBefore = (bestellungBefore * getraenke
+							.getEinheitProBestellung());
+
+					double verkaufsmengeBefore = totalBestellungBefore
+							- (totalBestellungBefore * getraenke.getSchwund());
+
+					double portionBefore = verkaufsmengeBefore
+							/ getraenke.getEinheitProGlas();
+					portionSumme -= portionBefore;
+				}
+				portionSumme += portion;
+
 				nettoUmsatzssummeView
 						.setText(df.format(nettoUmsatzsumme) + "€");
 				einkaufssummeView.setText(df.format(nettoEinkaufssumme) + "€");
@@ -371,13 +411,14 @@ public class GetraenkeActivity extends FragmentActivity implements
 						.findViewById(PROBESTELLUNGID)).getText().toString();
 				GetraenkeBestellungModel fb = new GetraenkeBestellungModel(
 						getraenke, proBestellung, bestellungen,
-						totalBestellung, einkaufspreis, nettoEinkauf,
+						totalBestellung, portion, einkaufspreis, nettoEinkauf,
 						bruttoEinkauf, verkaufspreis, nettoUmsatz,
 						bruttoUmsatz, wareneinsatz);
 
 				if (!getraenkeBestellungenSet.add(fb)) {
 					getraenkeBestellungenSet.remove(fb);
 					getraenkeBestellungenSet.add(fb);
+					indexList.remove(index);
 				}
 			}
 			// Khi Bestellung bi xoa thanh leer thi xoa luon fb trong Set
@@ -393,6 +434,13 @@ public class GetraenkeActivity extends FragmentActivity implements
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count,
 				int after) {
+			if (this.view.getId() == BESTELLUNGENID) {
+				if (!s.toString().equals("")) {
+					this.bestellungBefore = Integer.valueOf(s.toString());
+				} else {
+					this.bestellungBefore = 0;
+				}
+			}
 		}
 
 		@Override
@@ -426,11 +474,13 @@ public class GetraenkeActivity extends FragmentActivity implements
 
 				getraenkeBestellungenList = new ArrayList<GetraenkeBestellungModel>(
 						getraenkeBestellungenSet);
-				Collections.sort(getraenkeBestellungenList, getraenkeComparator);
+				Collections
+						.sort(getraenkeBestellungenList, getraenkeComparator);
 				if (!getraenkeBestellungenList.isEmpty()) {
 
 					int month = calendar.get(Calendar.MONTH) + 1;
 					int year = calendar.get(Calendar.YEAR);
+					bestellungID = UUID.randomUUID().toString();
 					for (GetraenkeBestellungModel i : getraenkeBestellungenList) {
 						getraenkeEinkaufPreisMap.put(i.getGetraenkeModel()
 								.getArtikelName(), i.getEinkaufspreis());
@@ -439,7 +489,8 @@ public class GetraenkeActivity extends FragmentActivity implements
 					GetraenkeBestellungenXmlWriter fbw = new GetraenkeBestellungenXmlWriter();
 					try {
 						fbw.writeGetraenkeBestellungenXml(
-								getraenkeBestellungenList, nettoUmsatzsumme,
+								getraenkeBestellungenList, bestellungID,
+								portionSumme, nettoUmsatzsumme,
 								nettoEinkaufssumme, bestellungsdatum,
 								daysFrom1970);
 						fepw.writeGetraenkeEinkaufpreisXml(
@@ -455,9 +506,12 @@ public class GetraenkeActivity extends FragmentActivity implements
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					Intent intent = new Intent(this,
-							GetraenkeBestellungenActivity.class);
-					startActivity(intent);
+					Intent returnIntent = new Intent();
+					returnIntent.putExtra("bestellungID", bestellungID);
+					returnIntent.putExtra("datum", bestellungsdatum);
+					returnIntent.putExtra("daysFrom1970", daysFrom1970);
+					setResult(RESULT_OK, returnIntent);
+					finish();
 				} else {
 					Toast.makeText(this, "Nichts zu speichern",
 							Toast.LENGTH_LONG).show();
@@ -475,15 +529,16 @@ public class GetraenkeActivity extends FragmentActivity implements
 			break;
 		}
 	}
-	
+
 	Comparator<GetraenkeBestellungModel> getraenkeComparator = new Comparator<GetraenkeBestellungModel>() {
 
 		@Override
 		public int compare(GetraenkeBestellungModel lhs,
 				GetraenkeBestellungModel rhs) {
-			// TODO Auto-generated method stub
-			return Integer.valueOf(lhs.getGetraenkeModel().getOrder()).compareTo(
-					Integer.valueOf(rhs.getGetraenkeModel().getOrder()));
+			return Integer
+					.valueOf(lhs.getGetraenkeModel().getOrder())
+					.compareTo(
+							Integer.valueOf(rhs.getGetraenkeModel().getOrder()));
 		}
 	};
 

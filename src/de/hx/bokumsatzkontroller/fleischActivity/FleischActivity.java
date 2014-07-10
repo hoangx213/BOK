@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -54,6 +55,7 @@ public class FleischActivity extends FragmentActivity implements
 
 	ArrayList<FleischModel> fleischList;
 	ArrayList<FleischBestellungModel> fleischBestellungenList;
+	HashSet<Integer> indexList;
 	Map<String, Double> fleischEinkaufPreisMap;
 	HashSet<FleischBestellungModel> fleischBestellungenSet;
 	FleischModelXmlParser fleischXP;
@@ -72,10 +74,12 @@ public class FleischActivity extends FragmentActivity implements
 	static final int EINKAUFSPREISID = 1234;
 	static final int VERKAUFSPREISID = 4321;
 	DecimalFormat df = new DecimalFormat("#.##");
-	DecimalFormat prozentZahl = new DecimalFormat("#");
+	DecimalFormat prozentZahl = new DecimalFormat("#.#");
 	Button fleischSaveBtn;
+	String bestellungID = "";
 	double nettoUmsatzsumme = 0;
 	double nettoEinkaufssumme = 0;
+	double portionSumme = 0;
 	int daysFrom1970;
 	String bestellungsdatum;
 	Utils utils = new Utils();
@@ -98,6 +102,7 @@ public class FleischActivity extends FragmentActivity implements
 		fleischBestellungenSet = new HashSet<FleischBestellungModel>();
 		fleischEinkaufPreisMap = new HashMap<String, Double>();
 		fleischXP = new FleischModelXmlParser(getApplicationContext());
+		indexList = new HashSet<Integer>();
 
 		try {
 			fleischList = fleischXP.fleischParsen();
@@ -188,7 +193,7 @@ public class FleischActivity extends FragmentActivity implements
 			nettoUmsatz.setBackgroundResource(R.color.White);
 			nettoUmsatz.setId(NETTOUMSATZID);
 			tr.addView(nettoUmsatz);
-			
+
 			TextView anteil = new TextView(this);
 			anteil.setTextAppearance(this, android.R.style.TextAppearance_Large);
 			anteil.setBackgroundResource(R.color.White);
@@ -234,7 +239,7 @@ public class FleischActivity extends FragmentActivity implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
-		startActivity(new Intent(this, FleischBestellungenActivity.class));
+		finish();
 		return true;
 	}
 
@@ -249,6 +254,7 @@ public class FleischActivity extends FragmentActivity implements
 
 		EditText view;
 		int index;
+		int bestellungBefore;
 
 		public MyTextWatcher(EditText view, int index) {
 			this.view = view;
@@ -274,14 +280,20 @@ public class FleischActivity extends FragmentActivity implements
 			verkaufspreis = ((verkaufspreisView.getText().toString())
 					.equals("") ? 0 : Double.valueOf(verkaufspreisView
 					.getText().toString()));
-			
-			if(bestellungen > 500 || einkaufspreis > 30 || verkaufspreis > 30){
-				Toast.makeText(getApplicationContext(), "Bestellungen,  Einkaufspreis oder Verkaufspreis zu hoch!!!", Toast.LENGTH_LONG).show();
+
+			if (bestellungen > 500 || einkaufspreis > 30 || verkaufspreis > 30) {
+				Toast.makeText(
+						getApplicationContext(),
+						"Bestellungen,  Einkaufspreis oder Verkaufspreis zu hoch!!!",
+						Toast.LENGTH_LONG).show();
 			}
 
 			// Khi Bestellung leer thi cac Felder khac ko can phai thay doi
 			else if (!bestellungenView.getText().toString().equals("")
 					|| view.getId() == BESTELLUNGENID) {
+				if (view.getId() == BESTELLUNGENID
+						&& !bestellungenView.getText().toString().equals(""))
+					indexList.add(index);
 				TextView totalView = (TextView) tr.findViewById(TOTALID);
 				TextView nettoUmsatzView = (TextView) tr
 						.findViewById(NETTOUMSATZID);
@@ -304,8 +316,10 @@ public class FleischActivity extends FragmentActivity implements
 
 				double verkaufsmenge = totalBestellung
 						- (totalBestellung * fleisch.getSchwund());
-				double nettoUmsatz = verkaufsmenge
-						* fleisch.getVerkaufsfaktor() * verkaufspreis;
+
+				double portion = verkaufsmenge * fleisch.getVerkaufsfaktor();
+
+				double nettoUmsatz = portion * verkaufspreis;
 				nettoUmsatzView.setText(df.format(nettoUmsatz));
 
 				double nettoEinkauf = totalBestellung * einkaufspreis;
@@ -323,7 +337,7 @@ public class FleischActivity extends FragmentActivity implements
 				TableLayout tl = (TableLayout) tr.getParent();
 				nettoUmsatzsumme = 0;
 				nettoEinkaufssumme = 0;
-				for (int j = 0; j < tl.getChildCount() - 1; j++) {
+				for (int j : indexList) {
 					TableRow thisTr = (TableRow) tl.getChildAt(j + 1);
 					if (((TextView) thisTr.findViewById(NETTOUMSATZID))
 							.getText() != "") {
@@ -343,7 +357,7 @@ public class FleischActivity extends FragmentActivity implements
 					}
 				}
 
-				for (int j = 0; j < tl.getChildCount() - 1; j++) {
+				for (int j : indexList) {
 					TableRow thisTr = (TableRow) tl.getChildAt(j + 1);
 					TextView thisAnteilView = (TextView) thisTr
 							.findViewById(ANTEILID);
@@ -359,15 +373,29 @@ public class FleischActivity extends FragmentActivity implements
 						thisAnteilView.setText(gerundeteAnteil + "%");
 					}
 				}
+
+				if (this.bestellungBefore != 0) {
+					double totalBestellungBefore = (bestellungBefore * fleisch
+							.getEinheitProBestellung());
+
+					double verkaufsmengeBefore = totalBestellungBefore
+							- (totalBestellungBefore * fleisch.getSchwund());
+
+					double portionBefore = verkaufsmengeBefore
+							* fleisch.getVerkaufsfaktor();
+					portionSumme -= portionBefore;
+				}
+				portionSumme += portion;
+
 				nettoUmsatzssummeView
 						.setText(df.format(nettoUmsatzsumme) + "€");
 				einkaufssummeView.setText(df.format(nettoEinkaufssumme) + "€");
 				String proBestellung = ((TextView) tr
 						.findViewById(PROBESTELLUNGID)).getText().toString();
 				FleischBestellungModel fb = new FleischBestellungModel(fleisch,
-						proBestellung, bestellungen, totalBestellung,
+						proBestellung, bestellungen, totalBestellung, portion,
 						einkaufspreis, nettoEinkauf, bruttoEinkauf,
-						verkaufspreis, nettoUmsatz, bruttoUmsatz, wareneinsatz); 
+						verkaufspreis, nettoUmsatz, bruttoUmsatz, wareneinsatz);
 
 				if (!fleischBestellungenSet.add(fb)) {
 					fleischBestellungenSet.remove(fb);
@@ -375,17 +403,25 @@ public class FleischActivity extends FragmentActivity implements
 				}
 			}
 			// Khi Bestellung bi xoa thanh leer thi xoa luon fb trong Set
-			else if (bestellungenView.getText().toString().equals("")
+			if (bestellungenView.getText().toString().equals("")
 					&& view.getId() == BESTELLUNGENID) {
 				FleischModel fleisch = fleischList.get(index);
 				FleischBestellungModel fb = new FleischBestellungModel(fleisch);
 				fleischBestellungenSet.remove(fb);
+				indexList.remove(index);
 			}
 		}
 
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count,
 				int after) {
+			if (this.view.getId() == BESTELLUNGENID) {
+				if (!s.toString().equals("")) {
+					this.bestellungBefore = Integer.valueOf(s.toString());
+				} else {
+					this.bestellungBefore = 0;
+				}
+			}
 		}
 
 		@Override
@@ -424,6 +460,7 @@ public class FleischActivity extends FragmentActivity implements
 
 					int month = calendar.get(Calendar.MONTH) + 1;
 					int year = calendar.get(Calendar.YEAR);
+					bestellungID = UUID.randomUUID().toString();
 					for (FleischBestellungModel i : fleischBestellungenList) {
 						fleischEinkaufPreisMap.put(i.getFleischModel()
 								.getArtikelName(), i.getEinkaufspreis());
@@ -432,9 +469,9 @@ public class FleischActivity extends FragmentActivity implements
 					FleischBestellungenXmlWriter fbw = new FleischBestellungenXmlWriter();
 					try {
 						fbw.writeFleischBestellungenXml(
-								fleischBestellungenList, nettoUmsatzsumme,
-								nettoEinkaufssumme, bestellungsdatum,
-								daysFrom1970);
+								fleischBestellungenList, bestellungID, portionSumme,
+								nettoUmsatzsumme, nettoEinkaufssumme,
+								bestellungsdatum, daysFrom1970);
 						fepw.writeFleischEinkaufpreisXml(
 								fleischEinkaufPreisMap, month, year);
 					} catch (TransformerFactoryConfigurationError e) {
@@ -448,9 +485,12 @@ public class FleischActivity extends FragmentActivity implements
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					Intent intent = new Intent(this,
-							FleischBestellungenActivity.class);
-					startActivity(intent);
+					Intent returnIntent = new Intent();
+					returnIntent.putExtra("bestellungID", bestellungID);
+					returnIntent.putExtra("datum", bestellungsdatum);
+					returnIntent.putExtra("daysFrom1970", daysFrom1970);
+					setResult(RESULT_OK,returnIntent);
+					finish();
 				} else {
 					Toast.makeText(this, "Nichts zu speichern",
 							Toast.LENGTH_LONG).show();
@@ -470,11 +510,9 @@ public class FleischActivity extends FragmentActivity implements
 	}
 
 	Comparator<FleischBestellungModel> fleischComparator = new Comparator<FleischBestellungModel>() {
-
 		@Override
 		public int compare(FleischBestellungModel lhs,
 				FleischBestellungModel rhs) {
-			// TODO Auto-generated method stub
 			return Integer.valueOf(lhs.getFleischModel().getOrder()).compareTo(
 					Integer.valueOf(rhs.getFleischModel().getOrder()));
 		}

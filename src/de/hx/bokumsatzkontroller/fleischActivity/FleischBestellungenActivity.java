@@ -44,6 +44,7 @@ import de.hx.bokumsatzkontroller.R;
 import de.hx.bokumsatzkontroller.models.fleisch.OneDayFleischBestellungenModel;
 import de.hx.bokumsatzkontroller.util.DatePickerFragment;
 import de.hx.bokumsatzkontroller.util.MonthPickerFragment;
+import de.hx.bokumsatzkontroller.util.Utils;
 import de.hx.bokumsatzkontroller.xml.fleisch.FleischBestellungenXmlParser;
 import de.hx.bokumsatzkontroller.xml.fleisch.FleischXmlParserHelper;
 
@@ -61,8 +62,12 @@ public class FleischBestellungenActivity extends FragmentActivity implements
 	int vonDaysFrom1970, bisDaysFrom1970, monatForEinkaufBericht,
 			jahrForEinkaufBericht;
 	static FleischXmlParserHelper xmlPH = new FleischXmlParserHelper();
+	FleischBestellungenXmlParser fbxp;
 	static FleischBestelungenListAdapter listViewAdapter;
 	static int positionOfFBToRemove = 0;
+	static int einkaufOderEndBericht = 0;
+	static final int EINKAUFBERICHT = 1;
+	static final int ENDBERICHT = 2;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -81,12 +86,13 @@ public class FleischBestellungenActivity extends FragmentActivity implements
 		zwischenBerichtOKBtn = (Button) findViewById(R.id.zwischenBerichtOKBtn);
 		einkaufBerichtOKBtn = (Button) findViewById(R.id.einkaufBerichtOKBtn);
 		zwischenBerichtBereich = (LinearLayout) findViewById(R.id.zwischenBerichtDatePicker);
+		endberichtBtn = (Button) findViewById(R.id.endberichtBtn);
 		monatEBBtn = (Button) findViewById(R.id.monatEBBtn);
-		FleischBestellungenXmlParser fbxp = new FleischBestellungenXmlParser(
-				this);
+		fbxp = new FleischBestellungenXmlParser(this);
 		try {
-			fleischBestelungenDaysList = fbxp.fleischParsen();
-			Collections.sort(fleischBestelungenDaysList, fleischBestellungenComparator);
+			fleischBestelungenDaysList = fbxp.fleischParsenSimple();
+			Collections.sort(fleischBestelungenDaysList,
+					fleischBestellungenComparator);
 		} catch (XmlPullParserException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -106,6 +112,7 @@ public class FleischBestellungenActivity extends FragmentActivity implements
 		einkaufBerichtOKBtn.setOnClickListener(this);
 		zwischenBerichtOKBtn.setOnClickListener(this);
 		monatEBBtn.setOnClickListener(this);
+		endberichtBtn.setOnClickListener(this);
 		listViewAdapter = new FleischBestelungenListAdapter(this,
 				fleischBestelungenDaysList);
 		fleischBestellungenListView.setAdapter(listViewAdapter);
@@ -198,7 +205,7 @@ public class FleischBestellungenActivity extends FragmentActivity implements
 		switch (v.getId()) {
 		case R.id.neueFBestellungBtn: {
 			Intent intent = new Intent(this, FleischActivity.class);
-			startActivity(intent);
+			startActivityForResult(intent, 1);
 			break;
 		}
 		case R.id.vonDatumFBBtn: {
@@ -216,7 +223,7 @@ public class FleischBestellungenActivity extends FragmentActivity implements
 		case R.id.einkaufsberichtBtn: {
 			zwischenBerichtBereich.setVisibility(View.GONE);
 			einkaufBerichtBereich.setVisibility(View.VISIBLE);
-
+			einkaufOderEndBericht = EINKAUFBERICHT;
 			break;
 		}
 		case R.id.zwischenberichtBtn: {
@@ -230,6 +237,7 @@ public class FleischBestellungenActivity extends FragmentActivity implements
 						FleischZwischenBerichtActivity.class);
 				intent.putExtra("vonDaysFrom1970", vonDaysFrom1970);
 				intent.putExtra("bisDaysFrom1970", bisDaysFrom1970);
+				intent.putExtra("berichtTyp", "zwischenbericht");
 				startActivity(intent);
 			}
 			break;
@@ -242,13 +250,38 @@ public class FleischBestellungenActivity extends FragmentActivity implements
 		}
 		case R.id.einkaufBerichtOKBtn: {
 			if (getMonatUndJahrForEinkaufBericht()) {
-				Intent intent = new Intent(this,
-						FleischEinkaufBerichtActivity.class);
-				intent.putExtra("monat", monatForEinkaufBericht);
-				intent.putExtra("jahr", jahrForEinkaufBericht);
-				startActivity(intent);
+				switch (einkaufOderEndBericht) {
+				case EINKAUFBERICHT:
+					Intent intentEinkauf = new Intent(this,
+							FleischEinkaufBerichtActivity.class);
+					intentEinkauf.putExtra("monat", monatForEinkaufBericht);
+					intentEinkauf.putExtra("jahr", jahrForEinkaufBericht);
+					startActivity(intentEinkauf);
+					break;
+				case ENDBERICHT:
+					Intent intentEnd = new Intent(this,
+							FleischZwischenBerichtActivity.class);
+					Utils util = new Utils();
+					intentEnd.putExtra("vonDaysFrom1970", util
+							.getVonDaysFrom1970OfFirstDay(
+									monatForEinkaufBericht,
+									jahrForEinkaufBericht));
+					intentEnd.putExtra("bisDaysFrom1970", util
+							.getVonDaysFrom1970OfLastDay(
+									monatForEinkaufBericht,
+									jahrForEinkaufBericht));
+					intentEnd.putExtra("berichtTyp", "endbericht");
+					startActivity(intentEnd);
+					break;
+				}
 			}
+			break;
 		}
+		case R.id.endberichtBtn:
+			zwischenBerichtBereich.setVisibility(View.GONE);
+			einkaufBerichtBereich.setVisibility(View.VISIBLE);
+			einkaufOderEndBericht = ENDBERICHT;
+			break;
 		default:
 			break;
 		}
@@ -342,15 +375,32 @@ public class FleischBestellungenActivity extends FragmentActivity implements
 			return builder.create();
 		}
 	}
-	
+
 	Comparator<OneDayFleischBestellungenModel> fleischBestellungenComparator = new Comparator<OneDayFleischBestellungenModel>() {
 
 		@Override
 		public int compare(OneDayFleischBestellungenModel lhs,
 				OneDayFleischBestellungenModel rhs) {
-			return Integer.valueOf(lhs.getDaysFrom1970()).compareTo(Integer.valueOf(rhs.getDaysFrom1970()));
+			return Integer.valueOf(lhs.getDaysFrom1970()).compareTo(
+					Integer.valueOf(rhs.getDaysFrom1970()));
 		}
-		
+
 	};
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (requestCode == 1) {
+			if (resultCode == RESULT_OK) {
+				fleischBestelungenDaysList
+						.add(new OneDayFleischBestellungenModel(data
+								.getStringExtra("bestellungID"), data
+								.getStringExtra("datum"), data.getIntExtra("daysFrom1970", 0)));
+				listViewAdapter.notifyDataSetChanged();
+			}
+			if (resultCode == RESULT_CANCELED) {
+				// Write your code if there's no result
+			}
+		}
+	}
 
 }

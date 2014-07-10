@@ -6,11 +6,11 @@ public class GetraenkeBestellungModel{
 	
 	GetraenkeModel getraenkeModel;
 	String proBestellung;
-	int bestellungen, total;
-	double einkaufspreis, nettoEinkauf, bruttoEinkauf, 
+	int bestellungen;
+	double total, portion, einkaufspreis, nettoEinkauf, bruttoEinkauf, 
 	verkaufspreis, nettoUmsatz, bruttoUmsatz, wareneinsatz; 
 	public GetraenkeBestellungModel(GetraenkeModel getraenkeModel, String proBestellung,
-			int bestellungen, int total, double einkaufspreis,
+			int bestellungen, double total, double portion, double einkaufspreis,
 			double nettoEinkauf, double bruttoEinkauf, double verkaufspreis,
 			double nettoUmsatz, double bruttoUmsatz, double wareneinsatz) {
 		super();
@@ -18,6 +18,7 @@ public class GetraenkeBestellungModel{
 		this.proBestellung = proBestellung;
 		this.bestellungen = bestellungen;
 		this.total = total;
+		this.portion = portion;
 		this.einkaufspreis = einkaufspreis;
 		this.nettoEinkauf = nettoEinkauf;
 		this.bruttoEinkauf = bruttoEinkauf;
@@ -25,6 +26,12 @@ public class GetraenkeBestellungModel{
 		this.nettoUmsatz = nettoUmsatz;
 		this.bruttoUmsatz = bruttoUmsatz;
 		this.wareneinsatz = wareneinsatz;
+	}
+	public double getPortion() {
+		return portion;
+	}
+	public void setPortion(double portion) {
+		this.portion = portion;
 	}
 	public GetraenkeBestellungModel(GetraenkeModel getraenkeModel){
 		this.getraenkeModel = getraenkeModel;
@@ -66,12 +73,12 @@ public class GetraenkeBestellungModel{
 	}
 
 
-	public int getTotal() {
+	public double getTotal() {
 		return total;
 	}
 
 
-	public void setTotal(int total) {
+	public void setTotal(double total) {
 		this.total = total;
 	}
 

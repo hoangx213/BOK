@@ -8,6 +8,7 @@
         <verkaufspreis>2.40</verkaufspreis>
         <einkaufspreis>25</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Premix</kategorie>
         <order>1</order>
     </item>
@@ -19,6 +20,7 @@
         <verkaufspreis>2.40</verkaufspreis>
         <einkaufspreis>25</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Premix</kategorie>
         <order>2</order>
     </item>
@@ -30,6 +32,7 @@
         <verkaufspreis>2.40</verkaufspreis>
         <einkaufspreis>25</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Premix</kategorie>
         <order>3</order>
     </item>
@@ -41,6 +44,7 @@
         <verkaufspreis>2.40</verkaufspreis>
         <einkaufspreis>25</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Premix</kategorie>
         <order>4</order>
     </item>
@@ -52,6 +56,7 @@
         <verkaufspreis>2.40</verkaufspreis>
         <einkaufspreis>18.5</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Premix</kategorie>
         <order>5</order>
     </item>
@@ -63,6 +68,7 @@
         <verkaufspreis>3.80</verkaufspreis>
         <einkaufspreis>13.40</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Flaschebier</kategorie>
         <order>6</order>
     </item>
@@ -74,6 +80,7 @@
         <verkaufspreis>3.80</verkaufspreis>
         <einkaufspreis>13.40</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Flaschebier</kategorie>
         <order>7</order>
     </item>
@@ -85,6 +92,7 @@
         <verkaufspreis>3.80</verkaufspreis>
         <einkaufspreis>13.40</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Flaschebier</kategorie>
         <order>8</order>
     </item>
@@ -96,6 +104,7 @@
         <verkaufspreis>2.80</verkaufspreis>
         <einkaufspreis>12.70</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Flaschebier</kategorie>
         <order>9</order>
     </item>
@@ -107,6 +116,7 @@
         <verkaufspreis>3.80</verkaufspreis>
         <einkaufspreis>12.70</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Flaschebier</kategorie>
         <order>10</order>
     </item>
@@ -118,6 +128,7 @@
         <verkaufspreis>2.60</verkaufspreis>
         <einkaufspreis>12.20</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Flaschebier</kategorie>
         <order>11</order>
     </item>
@@ -129,6 +140,7 @@
         <verkaufspreis>2.70</verkaufspreis>
         <einkaufspreis>8.60</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Saft</kategorie>
         <order>12</order>
     </item>
@@ -140,6 +152,7 @@
         <verkaufspreis>2.70</verkaufspreis>
         <einkaufspreis>5.90</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Saft</kategorie>
         <order>13</order>
     </item>
@@ -147,10 +160,11 @@
         <artikelName>Klind Ananas</artikelName>
         <einheit>Liter</einheit>
         <einheitProBestellung>6</einheitProBestellung>
-        <einheitProGlas>0.0</einheitProGlas>
-        <verkaufspreis>0.0</verkaufspreis>
+        <einheitProGlas>0.1</einheitProGlas>
+        <verkaufspreis>5.00</verkaufspreis>
         <einkaufspreis>10.14</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Saft</kategorie>
         <order>14</order>
     </item>
@@ -158,10 +172,11 @@
         <artikelName>Klind Pfirsisch</artikelName>
         <einheit>Liter</einheit>
         <einheitProBestellung>6</einheitProBestellung>
-        <einheitProGlas>0.0</einheitProGlas>
-        <verkaufspreis>0.0</verkaufspreis>
+        <einheitProGlas>0.1</einheitProGlas>
+        <verkaufspreis>5.00</verkaufspreis>
         <einkaufspreis>9.20</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Saft</kategorie>
         <order>15</order>
     </item>
@@ -173,6 +188,7 @@
         <verkaufspreis>4.20</verkaufspreis>
         <einkaufspreis>12.81</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wasser</kategorie>
         <order>16</order>
     </item>
@@ -184,6 +200,7 @@
         <verkaufspreis>4.80</verkaufspreis>
         <einkaufspreis>9.15</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wasser</kategorie>
         <order>17</order>
     </item>
@@ -195,6 +212,7 @@
         <verkaufspreis>2.80</verkaufspreis>
         <einkaufspreis>14.8</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schwebe, Bonaqua</kategorie>
         <order>18</order>
     </item>
@@ -206,6 +224,7 @@
         <verkaufspreis>2.80</verkaufspreis>
         <einkaufspreis>14.8</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schwebe, Bonaqua</kategorie>
         <order>19</order>
     </item>
@@ -217,6 +236,7 @@
         <verkaufspreis>2.80</verkaufspreis>
         <einkaufspreis>11.5</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schwebe, Bonaqua</kategorie>
         <order>20</order>
     </item>
@@ -228,6 +248,7 @@
         <verkaufspreis>2.80</verkaufspreis>
         <einkaufspreis>11.5</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schwebe, Bonaqua</kategorie>
         <order>21</order>
     </item>
@@ -241,6 +262,7 @@
         <verkaufspreis>2.60</verkaufspreis>
         <einkaufspreis>11.50</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schwebe, Bonaqua</kategorie>
         <order>22</order>
     </item>
@@ -252,6 +274,7 @@
         <verkaufspreis>2.60</verkaufspreis>
         <einkaufspreis>11.50</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schwebe, Bonaqua</kategorie>
         <order>23</order>
     </item>
@@ -261,8 +284,9 @@
         <einheitProBestellung>50</einheitProBestellung>
         <einheitProGlas>0.3</einheitProGlas>
         <verkaufspreis>2.80</verkaufspreis>
-        <einkaufspreis>0.00</einkaufspreis>
+        <einkaufspreis>66.25</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Fassbier</kategorie>
         <order>24</order>
     </item>
@@ -282,9 +306,10 @@
         <einheit>Liter</einheit>
         <einheitProBestellung>30</einheitProBestellung>
         <einheitProGlas>0.3</einheitProGlas>
-        <verkaufspreis>0.00</verkaufspreis>
-        <einkaufspreis>0.00</einkaufspreis>
+        <verkaufspreis>2.50</verkaufspreis>
+        <einkaufspreis>43.40</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Fassbier</kategorie>
         <order>26</order>
     </item>
@@ -297,6 +322,7 @@
         <verkaufspreis>2.70</verkaufspreis>
         <einkaufspreis>15.99</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Asiatische Lieferung</kategorie>
         <order>27</order>
     </item>
@@ -319,6 +345,7 @@
         <verkaufspreis>2.30</verkaufspreis>
         <einkaufspreis>15.63</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Asiatische Lieferung</kategorie>
         <order>29</order>
     </item>
@@ -330,27 +357,29 @@
         <verkaufspreis>2.50</verkaufspreis>
         <einkaufspreis>9.01</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Asiatische Lieferung</kategorie>
         <order>30</order>
     </item>
     <item>
         <artikelName>Mekong</artikelName>
         <einheit>Liter</einheit>
-        <einheitProBestellung>0.0</einheitProBestellung>
+        <einheitProBestellung>0.7</einheitProBestellung>
         <einheitProGlas>0.02</einheitProGlas>
         <verkaufspreis>2.50</verkaufspreis>
-        <einkaufspreis>0.0</einkaufspreis>
-        <schwund>0.10</schwund>
+        <einkaufspreis>13.50</einkaufspreis>
+        <schwund>0.20</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Asiatische Lieferung</kategorie>
         <order>31</order>
     </item>
     <item>
         <artikelName>Sake</artikelName>
         <einheit>Liter</einheit>
-        <einheitProBestellung>0.0</einheitProBestellung>
+        <einheitProBestellung>5.0</einheitProBestellung>
         <einheitProGlas>0.2</einheitProGlas>
         <verkaufspreis>3.40</verkaufspreis>
-        <einkaufspreis>0.0</einkaufspreis>
+        <einkaufspreis>29.50</einkaufspreis>
         <schwund>0.10</schwund>
         <kategorie>Asiatische Lieferung</kategorie>
         <order>32</order>
@@ -361,8 +390,9 @@
         <einheitProBestellung>500</einheitProBestellung>
         <einheitProGlas>10</einheitProGlas>
         <verkaufspreis>2.80</verkaufspreis>
-        <einkaufspreis>0.00</einkaufspreis>
+        <einkaufspreis>6.00</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Asiatische Lieferung</kategorie>
         <order>33</order>
     </item>
@@ -372,8 +402,9 @@
         <einheitProBestellung>500</einheitProBestellung>
         <einheitProGlas>10</einheitProGlas>
         <verkaufspreis>2.80</verkaufspreis>
-        <einkaufspreis>0.00</einkaufspreis>
+        <einkaufspreis>12.00</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Asiatische Lieferung</kategorie>
         <order>34</order>
     </item>
@@ -383,8 +414,9 @@
         <einheitProBestellung>550</einheitProBestellung>
         <einheitProGlas>20</einheitProGlas>
         <verkaufspreis>2.90</verkaufspreis>
-        <einkaufspreis>0.00</einkaufspreis>
+        <einkaufspreis>4.00</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Asiatische Lieferung</kategorie>
         <order>35</order>
     </item>
@@ -394,8 +426,9 @@
         <einheitProBestellung>1000</einheitProBestellung>
         <einheitProGlas>10</einheitProGlas>
         <verkaufspreis>2.00</verkaufspreis>
-        <einkaufspreis>0.00</einkaufspreis>
+        <einkaufspreis>12.00</einkaufspreis>
         <schwund>0.05</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Asiatische Lieferung</kategorie>
         <order>36</order>
     </item>
@@ -408,6 +441,7 @@
         <verkaufspreis>0.00</verkaufspreis>
         <einkaufspreis>0.021</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Backring Nord</kategorie>
         <order>37</order>
     </item>
@@ -419,6 +453,7 @@
         <verkaufspreis>0.00</verkaufspreis>
         <einkaufspreis>12.90</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Backring Nord</kategorie>
         <order>38</order>
     </item>
@@ -430,6 +465,7 @@
         <verkaufspreis>0.00</verkaufspreis>
         <einkaufspreis>0.12</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Backring Nord</kategorie>
         <order>39</order>
     </item>
@@ -441,6 +477,7 @@
         <verkaufspreis>0.00</verkaufspreis>
         <einkaufspreis>16.02</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Backring Nord</kategorie>
         <order>40</order>
     </item>
@@ -452,6 +489,7 @@
         <verkaufspreis>0.00</verkaufspreis>
         <einkaufspreis>8.96</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Backring Nord</kategorie>
         <order>41</order>
     </item>
@@ -463,6 +501,7 @@
         <verkaufspreis>0.00</verkaufspreis>
         <einkaufspreis>11.07</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Backring Nord</kategorie>
         <order>42</order>
     </item>
@@ -474,6 +513,7 @@
         <verkaufspreis>5.50</verkaufspreis>
         <einkaufspreis>9.90</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schnapps</kategorie>
         <order>43</order>
     </item>
@@ -485,6 +525,7 @@
         <verkaufspreis>5.50</verkaufspreis>
         <einkaufspreis>5.79</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schnapps</kategorie>
         <order>44</order>
     </item>
@@ -494,8 +535,9 @@
         <einheitProBestellung>0.7</einheitProBestellung>
         <einheitProGlas>0.02</einheitProGlas>
         <verkaufspreis>4.00</verkaufspreis>
-        <einkaufspreis>0.00</einkaufspreis>
-        <schwund>0.10</schwund>
+        <einkaufspreis>37.00</einkaufspreis>
+        <schwund>0.20</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schnapps</kategorie>
         <order>45</order>
     </item>
@@ -505,8 +547,9 @@
         <einheitProBestellung>0.7</einheitProBestellung>
         <einheitProGlas>0.02</einheitProGlas>
         <verkaufspreis>5.00</verkaufspreis>
-        <einkaufspreis>0.00</einkaufspreis>
-        <schwund>0.10</schwund>
+        <einkaufspreis>52.00</einkaufspreis>
+        <schwund>0.20</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schnapps</kategorie>
         <order>46</order>
     </item>
@@ -516,8 +559,9 @@
         <einheitProBestellung>0.7</einheitProBestellung>
         <einheitProGlas>0.02</einheitProGlas>
         <verkaufspreis>5.00</verkaufspreis>
-        <einkaufspreis>0.00</einkaufspreis>
-        <schwund>0.10</schwund>
+        <einkaufspreis>37.99</einkaufspreis>
+        <schwund>0.20</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schnapps</kategorie>
         <order>47</order>
     </item>
@@ -529,6 +573,7 @@
         <verkaufspreis>2.50</verkaufspreis>
         <einkaufspreis>18.79</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schnapps</kategorie>
         <order>48</order>
     </item>
@@ -540,6 +585,7 @@
         <verkaufspreis>2.60</verkaufspreis>
         <einkaufspreis>14.49</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schnapps</kategorie>
         <order>49</order>
     </item>
@@ -551,17 +597,19 @@
         <verkaufspreis>2.50</verkaufspreis>
         <einkaufspreis>8.99</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schnapps</kategorie>
         <order>50</order>
     </item>
     <item>
         <artikelName>Martini Bianco</artikelName>
         <einheit>Liter</einheit>
-        <einheitProBestellung>0.7</einheitProBestellung>
+        <einheitProBestellung>0.75</einheitProBestellung>
         <einheitProGlas>0.05</einheitProGlas>
         <verkaufspreis>2.60</verkaufspreis>
-        <einkaufspreis>0.00</einkaufspreis>
-        <schwund>0.10</schwund>
+        <einkaufspreis>7.00</einkaufspreis>
+        <schwund>0.15</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schnapps</kategorie>
         <order>51</order>
     </item>
@@ -571,8 +619,9 @@
         <einheitProBestellung>0.7</einheitProBestellung>
         <einheitProGlas>0.02</einheitProGlas>
         <verkaufspreis>2.60</verkaufspreis>
-        <einkaufspreis>0.00</einkaufspreis>
-        <schwund>0.10</schwund>
+        <einkaufspreis>11.90</einkaufspreis>
+        <schwund>0.15</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Schnapps</kategorie>
         <order>52</order>
     </item>
@@ -584,6 +633,7 @@
         <verkaufspreis>3.80</verkaufspreis>
         <einkaufspreis>2.60</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wein</kategorie>
         <order>53</order>
     </item>
@@ -596,17 +646,19 @@
         <verkaufspreis>12.50</verkaufspreis>
         <einkaufspreis>2.55</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wein</kategorie>
         <order>54</order>
     </item>
     <item>
         <artikelName>Prosecco Piccolo</artikelName>
-        <einheit>Liter</einheit>
-        <einheitProBestellung>0.00</einheitProBestellung>
-        <einheitProGlas>0.00</einheitProGlas>
-        <verkaufspreis>0.00</verkaufspreis>
-        <einkaufspreis>0.00</einkaufspreis>
-        <schwund>0.10</schwund>
+        <einheit>Flasche</einheit>
+        <einheitProBestellung>24.00</einheitProBestellung>
+        <einheitProGlas>1.00</einheitProGlas>
+        <verkaufspreis>4.80</verkaufspreis>
+        <einkaufspreis>31.20</einkaufspreis>
+        <schwund>0.0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wein</kategorie>
         <order>55</order>
     </item>
@@ -618,17 +670,19 @@
         <verkaufspreis>3.80</verkaufspreis>
         <einkaufspreis>2.40</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wein</kategorie>
         <order>56</order>
     </item>
     <item>
         <artikelName>Montepulciano</artikelName>
         <einheit>Liter</einheit>
-        <einheitProBestellung>0.75</einheitProBestellung>
+        <einheitProBestellung>0.7</einheitProBestellung>
         <einheitProGlas>0.20</einheitProGlas>
         <verkaufspreis>4.40</verkaufspreis>
-        <einkaufspreis>0.00</einkaufspreis>
-        <schwund>0.10</schwund>
+        <einkaufspreis>3.20</einkaufspreis>
+        <schwund>0.15</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wein</kategorie>
         <order>57</order>
     </item>
@@ -640,6 +694,7 @@
         <verkaufspreis>4.80</verkaufspreis>
         <einkaufspreis>4.00</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wein</kategorie>
         <order>58</order>
     </item>
@@ -651,6 +706,7 @@
         <verkaufspreis>4.80</verkaufspreis>
         <einkaufspreis>4.40</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wein</kategorie>
         <order>59</order>
     </item>
@@ -663,6 +719,7 @@
         <verkaufspreis>3.80</verkaufspreis>
         <einkaufspreis>2.60</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wein</kategorie>
         <order>60</order>
     </item>
@@ -674,6 +731,7 @@
         <verkaufspreis>4.80</verkaufspreis>
         <einkaufspreis>4.00</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wein</kategorie>
         <order>61</order>
     </item>
@@ -686,8 +744,21 @@
         <verkaufspreis>4.10</verkaufspreis>
         <einkaufspreis>3.70</einkaufspreis>
         <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wein</kategorie>
         <order>62</order>
+    </item>
+    <item>
+        <artikelName>Gavi</artikelName>
+        <einheit>Liter</einheit>
+        <einheitProBestellung>0.75</einheitProBestellung>
+        <einheitProGlas>0.20</einheitProGlas>
+        <verkaufspreis>4.40</verkaufspreis>
+        <einkaufspreis>3.90</einkaufspreis>
+        <schwund>0.10</schwund>
+        <festAnteil>0.0</festAnteil>
+        <kategorie>Wein</kategorie>
+        <order>63</order>
     </item>
     <item>
         <artikelName>Cotes du Rhone</artikelName>
@@ -695,10 +766,11 @@
         <einheitProBestellung>1</einheitProBestellung>
         <einheitProGlas>1</einheitProGlas>
         <verkaufspreis>18.20</verkaufspreis>
-        <einkaufspreis>0.00</einkaufspreis>
+        <einkaufspreis>6.50</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wein</kategorie>
-        <order>63</order>
+        <order>64</order>
     </item>
     <item>
         <artikelName>Sauvignon Cataldo</artikelName>
@@ -708,8 +780,9 @@
         <verkaufspreis>15.20</verkaufspreis>
         <einkaufspreis>3.50</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wein</kategorie>
-        <order>64</order>
+        <order>65</order>
     </item>
     <item>
         <artikelName>Riesling Spätlese</artikelName>
@@ -719,19 +792,21 @@
         <verkaufspreis>18.20</verkaufspreis>
         <einkaufspreis>2.60</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wein</kategorie>
-        <order>65</order>
+        <order>66</order>
     </item>
     <item>
         <artikelName>Shiraz Welmoed</artikelName>
         <einheit>Flasche</einheit>
         <einheitProBestellung>1</einheitProBestellung>
         <einheitProGlas>1</einheitProGlas>
-        <verkaufspreis>0.00</verkaufspreis>
+        <verkaufspreis>18.30</verkaufspreis>
         <einkaufspreis>4.90</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Wein</kategorie>
-        <order>66</order>
+        <order>67</order>
     </item>
     <item>
         <artikelName>Kohlensäure 10Kg</artikelName>
@@ -741,7 +816,8 @@
         <verkaufspreis>0.00</verkaufspreis>
         <einkaufspreis>30.50</einkaufspreis>
         <schwund>0</schwund>
+        <festAnteil>0.0</festAnteil>
         <kategorie>Kohlensaeure</kategorie>
-        <order>67</order>
+        <order>68</order>
     </item>
 </getraenke>

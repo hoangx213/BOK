@@ -2,13 +2,14 @@ package de.hx.bokumsatzkontroller.models.getraenke;
 
 public class GetraenkeModel {
 	String artikelName, einheit;
-	double einheitProBestellung, einheitProGlas, einkaufspreis, verkaufspreis, schwund;
+	double einheitProBestellung, einheitProGlas, einkaufspreis, 
+	verkaufspreis, schwund, festAnteil;
 	String kategorie;
 	int order;
 	public GetraenkeModel(String artikelName, String einheit,
 			double einheitProBestellung, double einheitProGlas,
 			double einkaufspreis, double verkaufspreis, double schwund,
-			String kategorie, int order) {
+			double festAnteil, String kategorie, int order) {
 		super();
 		this.artikelName = artikelName;
 		this.einheit = einheit;
@@ -17,6 +18,7 @@ public class GetraenkeModel {
 		this.einkaufspreis = einkaufspreis;
 		this.verkaufspreis = verkaufspreis;
 		this.schwund = schwund;
+		this.festAnteil = festAnteil;
 		this.kategorie = kategorie;
 		this.order = order;
 	}
@@ -24,6 +26,21 @@ public class GetraenkeModel {
 	public GetraenkeModel(String artikelName) {
 		super();
 		this.artikelName = artikelName;
+	}
+	
+	public GetraenkeModel(String artikelName, String kategorie, int order) {
+		super();
+		this.artikelName = artikelName;
+		this.kategorie = kategorie;
+		this.order = order;
+	}
+	
+	public double getFestAnteil() {
+		return festAnteil;
+	}
+
+	public void setFestAnteil(double festAnteil) {
+		this.festAnteil = festAnteil;
 	}
 	
 	public double getSchwund() {

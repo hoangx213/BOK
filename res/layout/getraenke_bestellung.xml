@@ -4,7 +4,7 @@
 
     <LinearLayout
         android:id="@+id/datumGetraenkeBestellung"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -33,9 +33,10 @@
 
     <LinearLayout
         android:id="@+id/bottom_bar2"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:orientation="vertical" 
         android:background="@color/WhiteSmoke">
 

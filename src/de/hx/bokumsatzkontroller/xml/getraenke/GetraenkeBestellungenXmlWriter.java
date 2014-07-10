@@ -3,7 +3,6 @@ package de.hx.bokumsatzkontroller.xml.getraenke;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,7 +28,7 @@ public class GetraenkeBestellungenXmlWriter {
 	};
 
 	public void writeGetraenkeBestellungenXml(
-			ArrayList<GetraenkeBestellungModel> gbList, double nettoUmsatzsumme,
+			ArrayList<GetraenkeBestellungModel> gbList, String bestellungID, double portionSumme, double nettoUmsatzsumme,
 			double einkaufssumme, String bestellungsdatum, int daysFrom1970)
 			throws ParserConfigurationException, SAXException, IOException,
 			TransformerFactoryConfigurationError, TransformerException {
@@ -47,9 +46,13 @@ public class GetraenkeBestellungenXmlWriter {
 		Node thisBestellung = doc.createElement("bestellung");
 		fbNode.appendChild(thisBestellung);
 		
-		Node bestellungID = doc.createElement("bestellungID");
-		bestellungID.setTextContent(UUID.randomUUID().toString());
-		thisBestellung.appendChild(bestellungID);
+		Node bestellungIDNode = doc.createElement("bestellungID");
+		bestellungIDNode.setTextContent(bestellungID);
+		thisBestellung.appendChild(bestellungIDNode);
+		
+		Node portionSummeNode = doc.createElement("portionSumme");
+		portionSummeNode.setTextContent(String.valueOf(portionSumme));
+		thisBestellung.appendChild(portionSummeNode);
 		
 		Node nettoUmsatzsummeNode = doc.createElement("nettoUmsatzsumme");
 		nettoUmsatzsummeNode.setTextContent(String.valueOf(nettoUmsatzsumme));
@@ -73,6 +76,14 @@ public class GetraenkeBestellungenXmlWriter {
 			artikelNameNode
 					.setTextContent(i.getGetraenkeModel().getArtikelName());
 			itemNode.appendChild(artikelNameNode);
+			Node kategorieNode = doc.createElement("kategorie");
+			kategorieNode
+					.setTextContent(i.getGetraenkeModel().getKategorie());
+			itemNode.appendChild(kategorieNode);
+			Node orderNode = doc.createElement("order");
+			orderNode
+					.setTextContent(String.valueOf(i.getGetraenkeModel().getOrder()));
+			itemNode.appendChild(orderNode);
 			Node proBestellung = doc.createElement("proBestellung");
 			proBestellung.setTextContent(String.valueOf(i.getProBestellung()));
 			itemNode.appendChild(proBestellung);
@@ -83,6 +94,9 @@ public class GetraenkeBestellungenXmlWriter {
 			Node totalNode = doc.createElement("total");
 			totalNode.setTextContent(String.valueOf(i.getTotal()));
 			itemNode.appendChild(totalNode);
+			Node portionNode = doc.createElement("portion");
+			portionNode.setTextContent(String.valueOf(i.getPortion()));
+			itemNode.appendChild(portionNode);
 			Node einkaufspreis = doc.createElement("einkaufspreis");
 			einkaufspreis.setTextContent(String.valueOf(i.getEinkaufspreis()));
 			itemNode.appendChild(einkaufspreis);

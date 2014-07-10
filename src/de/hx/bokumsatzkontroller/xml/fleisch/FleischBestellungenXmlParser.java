@@ -10,12 +10,11 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import android.content.Context;
+import android.os.Environment;
 import de.hx.bokumsatzkontroller.models.fleisch.FleischBestellungModel;
 import de.hx.bokumsatzkontroller.models.fleisch.FleischModel;
 import de.hx.bokumsatzkontroller.models.fleisch.OneDayFleischBestellungenModel;
-
-import android.content.Context;
-import android.os.Environment;
 
 public class FleischBestellungenXmlParser {
 
@@ -52,7 +51,7 @@ public class FleischBestellungenXmlParser {
 					String bestellungsdatum = "";
 					int daysFrom1970 = 0;
 					String bestellungID = "";
-					double nettoUmsatzsumme = 0, einkaufssumme = 0;
+					double portionSumme = 0, nettoUmsatzsumme = 0, einkaufssumme = 0;
 					ArrayList<FleischBestellungModel> thisDayFleischBestellungenList = new ArrayList<FleischBestellungModel>();
 					while (!nodeName.contentEquals("bestellung")) {
 						if (nodeName.contentEquals("nettoUmsatzsumme")
@@ -65,6 +64,12 @@ public class FleischBestellungenXmlParser {
 								&& eventType == XmlPullParser.START_TAG) {
 							eventType = xpp.next();
 							bestellungID = xpp.getText();
+						}
+
+						else if (nodeName.contentEquals("portionSumme")
+								&& eventType == XmlPullParser.START_TAG) {
+							eventType = xpp.next();
+							portionSumme = Double.valueOf(xpp.getText());
 						}
 
 						else if (nodeName.contentEquals("einkaufssumme")
@@ -91,7 +96,7 @@ public class FleischBestellungenXmlParser {
 							String artikelName = "";
 							String proBestellung = "";
 							int bestellungen = 0;
-							double total = 0, einkaufspreis = 0, nettoEinkauf = 0, bruttoEinkauf = 0, verkaufspreis = 0, nettoUmsatz = 0, bruttoUmsatz = 0, wareneinsatz = 0;
+							double total = 0, portion = 0, einkaufspreis = 0, nettoEinkauf = 0, bruttoEinkauf = 0, verkaufspreis = 0, nettoUmsatz = 0, bruttoUmsatz = 0, wareneinsatz = 0;
 							eventType = xpp.next();
 							nodeName = (xpp.getName() != null ? xpp.getName()
 									: "");
@@ -115,6 +120,10 @@ public class FleischBestellungenXmlParser {
 										&& eventType == XmlPullParser.START_TAG) {
 									eventType = xpp.next();
 									total = Double.valueOf(xpp.getText());
+								} else if (nodeName.contentEquals("portion")
+										&& eventType == XmlPullParser.START_TAG) {
+									eventType = xpp.next();
+									portion = Double.valueOf(xpp.getText());
 								} else if (nodeName
 										.contentEquals("einkaufspreis")
 										&& eventType == XmlPullParser.START_TAG) {
@@ -164,9 +173,9 @@ public class FleischBestellungenXmlParser {
 							fleischBestellung = new FleischBestellungModel(
 									new FleischModel(artikelName),
 									proBestellung, bestellungen, total,
-									einkaufspreis, nettoEinkauf, bruttoEinkauf,
-									verkaufspreis, nettoUmsatz, bruttoUmsatz,
-									wareneinsatz);
+									portion, einkaufspreis, nettoEinkauf,
+									bruttoEinkauf, verkaufspreis, nettoUmsatz,
+									bruttoUmsatz, wareneinsatz);
 							thisDayFleischBestellungenList
 									.add(fleischBestellung);
 						}
@@ -175,9 +184,71 @@ public class FleischBestellungenXmlParser {
 					}
 					thisDayFleischBestellung = new OneDayFleischBestellungenModel(
 							bestellungsdatum, daysFrom1970,
-							thisDayFleischBestellungenList, nettoUmsatzsumme,
-							einkaufssumme);
+							thisDayFleischBestellungenList, portionSumme,
+							nettoUmsatzsumme, einkaufssumme);
 					thisDayFleischBestellung.setBestellungID(bestellungID);
+					result.add(thisDayFleischBestellung);
+				}
+
+				eventType = xpp.next();
+				nodeName = (xpp.getName() != null ? xpp.getName() : "");
+			}
+			eventType = xpp.next();
+			nodeName = (xpp.getName() != null ? xpp.getName() : "");
+		}
+		return result;
+	}
+
+	public ArrayList<OneDayFleischBestellungenModel> fleischParsenSimple()
+			throws XmlPullParserException, IOException {
+
+		ArrayList<OneDayFleischBestellungenModel> result = new ArrayList<OneDayFleischBestellungenModel>();
+		// XmlPullParser xpp = context.getResources().getXml(R.xml.fleisch);
+		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+		factory.setNamespaceAware(true);
+		XmlPullParser xpp = factory.newPullParser();
+		File xmlFile = new File(Environment.getExternalStorageDirectory()
+				+ "/BOK/fleisch_bestellungen.xml");
+		if (!xmlFile.exists())
+			return null;
+		FileInputStream fis = new FileInputStream(xmlFile);
+		xpp.setInput(new InputStreamReader(fis));
+
+		int eventType = xpp.getEventType();
+		String nodeName;
+		while (eventType != XmlPullParser.END_DOCUMENT) {
+			if (xpp.getName() != null) {
+				if (xpp.getName().contentEquals("bestellung")
+						&& eventType == XmlPullParser.START_TAG) {
+					eventType = xpp.next();
+					nodeName = (xpp.getName() != null ? xpp.getName() : "");
+					OneDayFleischBestellungenModel thisDayFleischBestellung;
+					String bestellungsdatum = "";
+					int daysFrom1970 = 0;
+					String bestellungID = "";
+					while (!nodeName.contentEquals("bestellung")) {
+						if (nodeName.contentEquals("bestellungID")
+								&& eventType == XmlPullParser.START_TAG) {
+							eventType = xpp.next();
+							bestellungID = xpp.getText();
+						}
+
+						else if (nodeName.contentEquals("datum")
+								&& eventType == XmlPullParser.START_TAG) {
+							eventType = xpp.next();
+							bestellungsdatum = xpp.getText();
+						}
+
+						else if (nodeName.contentEquals("daysFrom1970")
+								&& eventType == XmlPullParser.START_TAG) {
+							eventType = xpp.next();
+							daysFrom1970 = Integer.valueOf(xpp.getText());
+						}
+
+						eventType = xpp.next();
+						nodeName = (xpp.getName() != null ? xpp.getName() : "");
+					}
+					thisDayFleischBestellung = new OneDayFleischBestellungenModel(bestellungID, bestellungsdatum, daysFrom1970);
 					result.add(thisDayFleischBestellung);
 				}
 

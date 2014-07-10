@@ -6,10 +6,10 @@ public class FleischBestellungModel{
 	FleischModel fleischModel;
 	String proBestellung;
 	int bestellungen;
-	double total, einkaufspreis, nettoEinkauf, bruttoEinkauf, 
+	double total, portion, einkaufspreis, nettoEinkauf, bruttoEinkauf, 
 	verkaufspreis, nettoUmsatz, bruttoUmsatz, wareneinsatz; 
 	public FleischBestellungModel(FleischModel fleischModel, String proBestellung,
-			int bestellungen, double total, double einkaufspreis,
+			int bestellungen, double total, double portion, double einkaufspreis,
 			double nettoEinkauf, double bruttoEinkauf, double verkaufspreis,
 			double nettoUmsatz, double bruttoUmsatz, double wareneinsatz) {
 		super();
@@ -17,6 +17,7 @@ public class FleischBestellungModel{
 		this.proBestellung = proBestellung;
 		this.bestellungen = bestellungen;
 		this.total = total;
+		this.portion = portion;
 		this.einkaufspreis = einkaufspreis;
 		this.nettoEinkauf = nettoEinkauf;
 		this.bruttoEinkauf = bruttoEinkauf;
@@ -138,9 +139,12 @@ public class FleischBestellungModel{
 		this.wareneinsatz = wareneinsatz;
 	}
 
-
-
-
+	public double getPortion() {
+		return portion;
+	}
+	public void setPortion(double portion) {
+		this.portion = portion;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

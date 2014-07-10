@@ -6,17 +6,31 @@ public class OneDayFleischBestellungenModel{
 	String datum;
 	int daysFrom1970;
 	ArrayList<FleischBestellungModel> fleischbestellungen;
-	double nettoUmsatzssumme, einkaufssumme;
+	double portionSumme, nettoUmsatzssumme, einkaufssumme;
 	String bestellungID;
 	public OneDayFleischBestellungenModel(String datum, int daysFrom1970,
-			ArrayList<FleischBestellungModel> fleischbestellungen,
+			ArrayList<FleischBestellungModel> fleischbestellungen, double portionSumme,
 			double nettoUmsatzssumme, double einkaufssumme) {
 		super();
 		this.datum = datum;
 		this.daysFrom1970 = daysFrom1970;
+		this.portionSumme = portionSumme;
 		this.fleischbestellungen = fleischbestellungen;
 		this.nettoUmsatzssumme = nettoUmsatzssumme;
 		this.einkaufssumme = einkaufssumme;
+	}
+	
+	public OneDayFleischBestellungenModel(String bestellungID, String datum, int daysFrom1970){
+		this.bestellungID = bestellungID;
+		this.datum = datum;
+		this.daysFrom1970 = daysFrom1970;
+	}
+	
+	public double getPortionSumme() {
+		return portionSumme;
+	}
+	public void setPortionSumme(double portionSumme) {
+		this.portionSumme = portionSumme;
 	}
 	public String getDatum() {
 		return datum;

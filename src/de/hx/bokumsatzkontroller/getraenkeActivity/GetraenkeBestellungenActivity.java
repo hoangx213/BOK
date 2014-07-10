@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -39,9 +41,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.hx.bokumsatzkontroller.MainActivity;
 import de.hx.bokumsatzkontroller.R;
+import de.hx.bokumsatzkontroller.models.fleisch.OneDayFleischBestellungenModel;
 import de.hx.bokumsatzkontroller.models.getraenke.OneDayGetraenkeBestellungenModel;
 import de.hx.bokumsatzkontroller.util.DatePickerFragment;
 import de.hx.bokumsatzkontroller.util.MonthPickerFragment;
+import de.hx.bokumsatzkontroller.util.Utils;
 import de.hx.bokumsatzkontroller.xml.getraenke.GetraenkeBestellungenXmlParser;
 import de.hx.bokumsatzkontroller.xml.getraenke.GetraenkeXmlParserHelper;
 
@@ -61,6 +65,9 @@ public class GetraenkeBestellungenActivity extends FragmentActivity implements
 	static GetraenkeXmlParserHelper xmlPH = new GetraenkeXmlParserHelper();
 	static GetraenkeBestelungenListAdapter listViewAdapter;
 	static int positionOfFBToRemove = 0;
+	static int einkaufOderEndBericht = 0;
+	static final int EINKAUFBERICHT = 1;
+	static final int ENDBERICHT = 2;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -79,11 +86,14 @@ public class GetraenkeBestellungenActivity extends FragmentActivity implements
 		zwischenBerichtOKBtn = (Button) findViewById(R.id.zwischenBerichtOKBtn);
 		einkaufBerichtOKBtn = (Button) findViewById(R.id.einkaufBerichtOKBtn);
 		zwischenBerichtBereich = (LinearLayout) findViewById(R.id.zwischenBerichtDatePicker);
+		endberichtBtn = (Button) findViewById(R.id.endberichtBtn);
 		monatEBBtn = (Button) findViewById(R.id.monatEBBtn);
 		GetraenkeBestellungenXmlParser fbxp = new GetraenkeBestellungenXmlParser(
 				this);
 		try {
-			getraenkeBestelungenDaysList = fbxp.getraenkeParsen();
+			getraenkeBestelungenDaysList = fbxp.getraenkeParsenSimple();
+			Collections.sort(getraenkeBestelungenDaysList,
+					getraenkeBestellungenComparator);
 		} catch (XmlPullParserException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -103,6 +113,7 @@ public class GetraenkeBestellungenActivity extends FragmentActivity implements
 		einkaufBerichtOKBtn.setOnClickListener(this);
 		zwischenBerichtOKBtn.setOnClickListener(this);
 		monatEBBtn.setOnClickListener(this);
+		endberichtBtn.setOnClickListener(this);
 		listViewAdapter = new GetraenkeBestelungenListAdapter(this,
 				getraenkeBestelungenDaysList);
 		getraenkeBestellungenListView.setAdapter(listViewAdapter);
@@ -195,7 +206,7 @@ public class GetraenkeBestellungenActivity extends FragmentActivity implements
 		switch (v.getId()) {
 		case R.id.neueFBestellungBtn: {
 			Intent intent = new Intent(this, GetraenkeActivity.class);
-			startActivity(intent);
+			startActivityForResult(intent, 1);
 			break;
 		}
 		case R.id.vonDatumFBBtn: {
@@ -213,7 +224,7 @@ public class GetraenkeBestellungenActivity extends FragmentActivity implements
 		case R.id.einkaufsberichtBtn: {
 			zwischenBerichtBereich.setVisibility(View.GONE);
 			einkaufBerichtBereich.setVisibility(View.VISIBLE);
-
+			einkaufOderEndBericht = EINKAUFBERICHT;
 			break;
 		}
 		case R.id.zwischenberichtBtn: {
@@ -227,6 +238,7 @@ public class GetraenkeBestellungenActivity extends FragmentActivity implements
 						GetraenkeZwischenBerichtActivity.class);
 				intent.putExtra("vonDaysFrom1970", vonDaysFrom1970);
 				intent.putExtra("bisDaysFrom1970", bisDaysFrom1970);
+				intent.putExtra("berichtTyp", "zwischenbericht");
 				startActivity(intent);
 			}
 			break;
@@ -237,15 +249,39 @@ public class GetraenkeBestellungenActivity extends FragmentActivity implements
 			newFragment.show(getSupportFragmentManager(), "monatPicker");
 			break;
 		}
-		case R.id.einkaufBerichtOKBtn: {
+		case R.id.einkaufBerichtOKBtn:
 			if (getMonatUndJahrForEinkaufBericht()) {
-				Intent intent = new Intent(this,
-						GetraenkeEinkaufBerichtActivity.class);
-				intent.putExtra("monat", monatForEinkaufBericht);
-				intent.putExtra("jahr", jahrForEinkaufBericht);
-				startActivity(intent);
+				switch (einkaufOderEndBericht) {
+				case EINKAUFBERICHT:
+					Intent intentEinkauf = new Intent(this,
+							GetraenkeEinkaufBerichtActivity.class);
+					intentEinkauf.putExtra("monat", monatForEinkaufBericht);
+					intentEinkauf.putExtra("jahr", jahrForEinkaufBericht);
+					startActivity(intentEinkauf);
+					break;
+				case ENDBERICHT:
+					Intent intentEnd = new Intent(this,
+							GetraenkeZwischenBerichtActivity.class);
+					Utils util = new Utils();
+					intentEnd.putExtra("vonDaysFrom1970", util
+							.getVonDaysFrom1970OfFirstDay(
+									monatForEinkaufBericht,
+									jahrForEinkaufBericht));
+					intentEnd.putExtra("bisDaysFrom1970", util
+							.getVonDaysFrom1970OfLastDay(
+									monatForEinkaufBericht,
+									jahrForEinkaufBericht));	
+					intentEnd.putExtra("berichtTyp", "endbericht");
+					startActivity(intentEnd);
+					break;
+				}
 			}
-		}
+			break;
+		case R.id.endberichtBtn:
+			zwischenBerichtBereich.setVisibility(View.GONE);
+			einkaufBerichtBereich.setVisibility(View.VISIBLE);
+			einkaufOderEndBericht = ENDBERICHT;
+			break;
 		default:
 			break;
 		}
@@ -337,6 +373,33 @@ public class GetraenkeBestellungenActivity extends FragmentActivity implements
 							});
 			// Create the AlertDialog object and return it
 			return builder.create();
+		}
+	}
+	
+	Comparator<OneDayGetraenkeBestellungenModel> getraenkeBestellungenComparator = new Comparator<OneDayGetraenkeBestellungenModel>() {
+
+		@Override
+		public int compare(OneDayGetraenkeBestellungenModel lhs,
+				OneDayGetraenkeBestellungenModel rhs) {
+			return Integer.valueOf(lhs.getDaysFrom1970()).compareTo(
+					Integer.valueOf(rhs.getDaysFrom1970()));
+		}
+
+	};
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (requestCode == 1) {
+			if (resultCode == RESULT_OK) {
+				getraenkeBestelungenDaysList
+						.add(new OneDayGetraenkeBestellungenModel(data
+								.getStringExtra("bestellungID"), data
+								.getStringExtra("datum"), data.getIntExtra("daysFrom1970", 0)));
+				listViewAdapter.notifyDataSetChanged();
+			}
+			if (resultCode == RESULT_CANCELED) {
+				// Write your code if there's no result
+			}
 		}
 	}
 

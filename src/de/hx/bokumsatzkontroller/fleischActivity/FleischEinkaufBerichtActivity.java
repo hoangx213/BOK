@@ -2,15 +2,19 @@ package de.hx.bokumsatzkontroller.fleischActivity;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.view.MenuItem;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -24,7 +28,7 @@ public class FleischEinkaufBerichtActivity extends Activity {
 	int selectedMonat, selectedJahr, lastMonat, lastJahr;
 	Map<String, Double> selectedMonatEinkaufspreisMap = null,
 			lastMonatEinkaufspreisMap = null;
-	DecimalFormat prozentZahl = new DecimalFormat("#");
+	DecimalFormat prozentZahl = new DecimalFormat("#.#");
 	DecimalFormat df = new DecimalFormat("#.##");
 	TableLayout table;
 	Utils utils = new Utils();
@@ -51,15 +55,20 @@ public class FleischEinkaufBerichtActivity extends Activity {
 			lastMonatEinkaufspreisMap = fEPXP.getMonatEinkaufspreisMap(
 					lastMonat, lastJahr);
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		Calendar c = Calendar.getInstance();
+		c.set(selectedJahr, selectedMonat, 0);
+		
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle("Einkaufsbericht von " + DateFormat.format("MMMM yyyy ", c.getTime()));
 
 		if (selectedMonatEinkaufspreisMap != null) {
 			for (String key : selectedMonatEinkaufspreisMap.keySet()) {
@@ -136,6 +145,12 @@ public class FleischEinkaufBerichtActivity extends Activity {
 			}
 		}
 
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem menuItem) {
+		finish();
+		return true;
 	}
 
 }

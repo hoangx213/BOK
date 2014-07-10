@@ -30,9 +30,10 @@ public class FleischBestellungNachschauActivity extends Activity {
 	TableLayout table;
 	TextView nettoUmsatzssummeView;
 	TextView nettoEinkaufssummeView;
+	
 	OneDayFleischBestellungenModel thisDayBestellungen;
 	DecimalFormat df = new DecimalFormat("#.##");
-	DecimalFormat prozentZahl = new DecimalFormat("#");
+	DecimalFormat prozentZahl = new DecimalFormat("#.#");
 	Utils utils = new Utils();
 
 	/** Called when the activity is first created. */
@@ -69,7 +70,7 @@ public class FleischBestellungNachschauActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
-		startActivity(new Intent(this, FleischBestellungenActivity.class));
+		finish();
 		return true;
 	}
 

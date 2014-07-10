@@ -48,7 +48,7 @@ public class GetraenkeModelXmlParser {
 							GetraenkeModel getraenkeModel;
 							String artikelName = "", einheit = "";
 							double einheitProBestellung = 0, einheitProGlas = 0, verkaufspreis = 0, einkaufspreis = 0,
-									schwund = 0;
+									schwund = 0, festAnteil = 0;
 							String kategorie = "";
 							int order = 0;
 							eventType = xpp.next();
@@ -95,6 +95,10 @@ public class GetraenkeModelXmlParser {
 										&& eventType == XmlPullParser.START_TAG) {
 									eventType = xpp.next();
 									schwund = Double.valueOf(xpp.getText());
+								} else if (nodeName.contentEquals("festAnteil")
+										&& eventType == XmlPullParser.START_TAG) {
+									eventType = xpp.next();
+									festAnteil = Double.valueOf(xpp.getText());
 								} else if (nodeName.contentEquals("kategorie")
 										&& eventType == XmlPullParser.START_TAG) {
 									eventType = xpp.next();
@@ -108,7 +112,7 @@ public class GetraenkeModelXmlParser {
 							getraenkeModel = new GetraenkeModel(artikelName,
 									einheit, einheitProBestellung,
 									einheitProGlas, einkaufspreis,
-									verkaufspreis, schwund, kategorie, order);
+									verkaufspreis, schwund, festAnteil, kategorie, order);
 							result.add(getraenkeModel);
 						}
 						eventType = xpp.next(); 

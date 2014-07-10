@@ -47,7 +47,9 @@ public class FleischModelXmlParser {
 						if (nodeName.contentEquals("item") && eventType == XmlPullParser.START_TAG) {
 							FleischModel fleischModel;
 							String artikelName = "", einheit = "";
-							double einheitProBestellung = 0, schwund = 0, verkaufsfaktor = 0, bruttoPreis = 0, nettoPreis = 0, einkaufspreis = 0;
+							double einheitProBestellung = 0, schwund = 0, verkaufsfaktor = 0, bruttoPreis = 0, 
+									nettoPreis = 0, einkaufspreis = 0, festAnteil = 0;
+							String kategorie = "";
 							int order = 0;
 							eventType = xpp.next();
 							nodeName = (xpp.getName() != null ? xpp.getName() : "");
@@ -91,6 +93,18 @@ public class FleischModelXmlParser {
 									einkaufspreis = Double.valueOf(xpp
 											.getText());
 								} else if (nodeName
+										.contentEquals("festAnteil")
+										&& eventType == XmlPullParser.START_TAG) {
+									eventType = xpp.next();
+									festAnteil = Double.valueOf(xpp
+											.getText());
+								} else if (nodeName
+										.contentEquals("kategorie")
+										&& eventType == XmlPullParser.START_TAG) {
+									eventType = xpp.next();
+									kategorie = String.valueOf(xpp
+											.getText());	
+								} else if (nodeName
 										.contentEquals("order")
 										&& eventType == XmlPullParser.START_TAG) {
 									eventType = xpp.next();
@@ -103,7 +117,7 @@ public class FleischModelXmlParser {
 							fleischModel = new FleischModel(artikelName,
 									einheit, einheitProBestellung, schwund,
 									verkaufsfaktor, bruttoPreis, nettoPreis,
-									einkaufspreis, order);
+									einkaufspreis, festAnteil, kategorie, order);
 							result.add(fleischModel);
 						}
 						eventType = xpp.next();
